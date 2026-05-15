@@ -1,0 +1,1361 @@
+<!DOCTYPE html>
+<html lang="en" data-section="hero">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>lucholabs.dev/lab — Luis Alberto Duarte Cortés — AI Systems & Automation Engineer</title>
+<meta name="description" content="The /lab: live projects, manifesto, and archive of dead experiments. Built in Bogotá by an AI systems and automation engineer.">
+<meta name="theme-color" content="#191919">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="lucholabs.dev/lab — Luis Alberto Duarte Cortés">
+<meta property="og:description" content="The /lab: live projects, manifesto, and archive of dead experiments.">
+<meta property="og:url" content="https://lucholabs.dev/lab">
+<meta property="og:image" content="https://lucholabs.dev/lab/assets/lucholabs-favicon.png">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="lucholabs.dev/lab">
+<meta name="twitter:description" content="The /lab: live projects, manifesto, and archive of dead experiments.">
+<meta name="twitter:image" content="https://lucholabs.dev/lab/assets/lucholabs-favicon.png">
+
+<link rel="canonical" href="https://lucholabs.dev/lab">
+<link rel="icon" type="image/png" href="assets/lucholabs-favicon.png">
+<link rel="apple-touch-icon" href="assets/lucholabs-favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Pixelify+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root {
+  --bg: #191919;
+  --bg-2: #0f0f0f;
+  --fg: #fffaee;
+  --fg-2: #ddd;
+  --fg-mute: #a3a3a3;
+  --fg-faint: #787878;
+  --line: #fffaee;
+  --line-faint: rgba(255, 250, 238, 0.18);
+  --accent: #fe5102;
+  --accent-warm: #ffcd9f;
+
+  --status-progress: #ffcd9f;
+  --status-prototype: #a3a3a3;
+  --status-research: #ddd;
+  --status-live: #fe5102;
+  --killed: #fe5102;
+
+  --chrome-h-top: 76px;
+  --chrome-h-bot: 64px;
+
+  --f-display: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-text: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-pixel: "Pixelify Sans", ui-monospace, monospace;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+
+  --t-fast: 180ms cubic-bezier(.2,.7,.2,1);
+  --t-med: 360ms cubic-bezier(.2,.7,.2,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-text);
+  font-size: 16px;
+  line-height: 1.45;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden;
+}
+
+body { position: relative; }
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--accent); color: var(--bg); }
+
+/* -------- Background overlays (deck-style) -------- */
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-ascii {
+  background: url("assets/ascii-texture.png") center / 1761px 1761px no-repeat;
+  background-position: center -200px;
+  opacity: 0.10;
+  mix-blend-mode: lighten;
+}
+.bg-halftone {
+  background-image: radial-gradient(circle at center, rgba(255, 250, 238, 0.06) 1px, transparent 1.4px);
+  background-size: 8px 8px;
+  mix-blend-mode: overlay;
+  opacity: 0.45;
+}
+.bg-grain {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+
+/* -------- Chrome: header + footer -------- */
+.chrome {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  background: linear-gradient(to bottom, rgba(25,25,25,0.92), rgba(25,25,25,0.65));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  user-select: none;
+}
+.chrome--top {
+  top: 0;
+  height: var(--chrome-h-top);
+  border-bottom: 1px solid var(--line-faint);
+}
+.chrome--bot {
+  bottom: 0;
+  height: var(--chrome-h-bot);
+  border-top: 1px solid var(--line-faint);
+  justify-content: space-between;
+}
+
+.crumb-wrap {
+  font-family: var(--f-text);
+  font-weight: 400;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+.crumb-wrap .dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--accent);
+  border-radius: 999px;
+  margin-right: 14px;
+  vertical-align: 1px;
+}
+.crumb-wrap #crumb {
+  color: var(--accent);
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.cv-link {
+  margin-left: auto;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  padding: 10px 18px;
+  border: 1px solid var(--line-faint);
+  border-radius: 999px;
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+.cv-link:hover, .cv-link:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(254, 81, 2, 0.05);
+  outline: none;
+}
+
+/* Footer stamp + pager */
+.stamp {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.stamp .stamp-sep { margin: 0 12px; opacity: 0.6; }
+.stamp #stamp-current { color: var(--accent); }
+
+.pager {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+}
+.pager .pbtn {
+  width: 38px;
+  height: 38px;
+  border-radius: 999px;
+  border: 1px solid var(--line-faint);
+  display: grid;
+  place-items: center;
+  color: var(--fg);
+  cursor: pointer;
+  transition: border-color var(--t-fast), color var(--t-fast), background var(--t-fast);
+  background: transparent;
+}
+.pager .pbtn:hover, .pager .pbtn:focus-visible {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: rgba(254, 81, 2, 0.06);
+  outline: none;
+}
+.pager .pbtn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+.pager .pbtn[disabled] { opacity: 0.3; cursor: default; }
+
+/* -------- Scroller + sections -------- */
+.scroller {
+  position: relative;
+  z-index: 5;
+  height: 100vh;
+  height: 100dvh;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+  scrollbar-width: thin;
+  scrollbar-color: var(--fg-faint) transparent;
+}
+.scroller::-webkit-scrollbar { width: 6px; }
+.scroller::-webkit-scrollbar-track { background: transparent; }
+.scroller::-webkit-scrollbar-thumb { background: rgba(255,250,238,0.15); border-radius: 3px; }
+.scroller::-webkit-scrollbar-thumb:hover { background: rgba(255,250,238,0.3); }
+@supports not (height: 100dvh) { .scroller { height: 100vh; } }
+
+section {
+  min-height: 100vh;
+  min-height: 100dvh;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: calc(var(--chrome-h-top) + 48px) 7vw calc(var(--chrome-h-bot) + 48px);
+  position: relative;
+}
+section.has-overflow {
+  justify-content: flex-start;
+  padding-top: calc(var(--chrome-h-top) + 60px);
+}
+.section-inner {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity var(--t-med), transform var(--t-med);
+}
+section.in-view .section-inner { opacity: 1; transform: none; }
+
+/* -------- Section super-label + title (deck pattern) -------- */
+.super {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 26px;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+}
+.super::before {
+  content: "";
+  width: 24px;
+  height: 1px;
+  background: var(--accent);
+}
+.s-title {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(48px, 7vw, 96px);
+  line-height: 0.95;
+  letter-spacing: -0.045em;
+  color: var(--fg);
+  margin-bottom: 36px;
+}
+.s-title em { font-style: normal; color: var(--accent); }
+
+/* -------- Hero -------- */
+#hero { justify-content: flex-end; padding-bottom: calc(var(--chrome-h-bot) + 96px); }
+.hero-stamp {
+  font-family: var(--f-mono);
+  font-size: 14px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 28px;
+}
+.wordmark {
+  font-family: var(--f-display);
+  font-weight: 500;
+  font-size: clamp(64px, 11vw, 160px);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--fg);
+  margin-bottom: 40px;
+}
+.wordmark em { font-style: normal; color: var(--accent); }
+.tagline {
+  font-family: var(--f-pixel);
+  font-size: clamp(28px, 3.8vw, 48px);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+  max-width: 1100px;
+  margin-bottom: 22px;
+}
+.typer-line {
+  font-family: var(--f-pixel);
+  font-size: clamp(24px, 3vw, 38px);
+  line-height: 1.15;
+  color: var(--fg-2);
+  margin-bottom: 22px;
+}
+.typer-line .label { color: var(--fg-mute); }
+.typer-line #typed { color: var(--accent); }
+.typer-line .caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background: var(--accent);
+  margin-left: 6px;
+  vertical-align: -0.12em;
+  animation: blink 1.05s steps(1, end) infinite;
+}
+.typer-line .caret.idle { animation: blink 1.05s steps(1, end) infinite; }
+@keyframes blink { 50% { background: transparent; } }
+.sub {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-top: 12px;
+}
+.scroll-cue {
+  position: absolute;
+  bottom: calc(var(--chrome-h-bot) + 24px);
+  left: 7vw;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  animation: nudge 2.4s ease-in-out infinite;
+}
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); opacity: 0.55; }
+  50% { transform: translateY(6px); opacity: 1; }
+}
+
+/* -------- Manifesto -------- */
+.blocks { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 64px; }
+.block { padding: 28px 0; border-top: 1px solid var(--line-faint); }
+.block-h {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.1;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+}
+.block-h .n {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  color: var(--accent);
+  font-weight: 500;
+}
+.block-body {
+  font-family: var(--f-text);
+  font-size: 17px;
+  line-height: 1.55;
+  color: var(--fg-2);
+}
+
+/* -------- Thesis -------- */
+#thesis .thesis-title {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: clamp(28px, 3.5vw, 44px);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  margin-bottom: 10px;
+  max-width: 1100px;
+}
+#thesis .thesis-sub {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 22px;
+}
+.meta-row {
+  font-family: var(--f-mono);
+  font-size: 14px;
+  color: var(--fg);
+  margin: 8px 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+}
+.meta-row .k {
+  color: var(--accent);
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  font-size: 12px;
+  margin-right: 10px;
+  min-width: 110px;
+}
+.meta-row.dim { color: var(--fg-mute); }
+.impact {
+  margin-top: 28px;
+  font-family: var(--f-text);
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--fg);
+  max-width: 1100px;
+  padding: 24px 0;
+  border-top: 1px solid var(--line-faint);
+  border-bottom: 1px solid var(--line-faint);
+}
+.footer-note {
+  margin-top: 18px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.06em;
+  color: var(--fg-faint);
+  font-style: italic;
+}
+
+/* Status pills (deck-style: thin border + uppercase mono) */
+.pill {
+  display: inline-block;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-weight: 500;
+}
+.pill.live { color: var(--accent); border-color: var(--accent); background: rgba(254,81,2,0.08); }
+.pill.progress { color: var(--accent-warm); }
+.pill.prototype { color: var(--fg-mute); }
+.pill.research { color: var(--fg-2); }
+
+/* -------- Stack -------- */
+#stack .cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 64px;
+  padding: 28px 0;
+  border-top: 1px solid var(--line-faint);
+  border-bottom: 1px solid var(--line-faint);
+}
+#stack .col h3 {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+  font-weight: 500;
+}
+#stack .col ul {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 24px;
+  font-family: var(--f-text);
+  font-size: 20px;
+  color: var(--fg);
+}
+#stack .col li::before {
+  content: "→ ";
+  color: var(--accent);
+  margin-right: 6px;
+}
+.creds {
+  margin-top: 24px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
+.creds .k { color: var(--accent); margin-right: 14px; }
+
+/* -------- Projects index -------- */
+#projects .cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 28px;
+  margin-top: 8px;
+}
+#projects .card {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  border: 1px solid var(--line-faint);
+  border-radius: 4px;
+  background: rgba(15,15,15,0.4);
+  transition: border-color var(--t-fast), background var(--t-fast), transform var(--t-fast);
+  text-decoration: none;
+  color: inherit;
+}
+#projects .card:hover, #projects .card:focus-visible {
+  border-color: var(--accent);
+  background: rgba(254,81,2,0.04);
+  transform: translateY(-2px);
+  outline: none;
+}
+#projects .card .code {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 18px;
+}
+#projects .card h3 {
+  font-family: var(--f-display);
+  font-weight: 700;
+  font-size: 34px;
+  line-height: 1.0;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+  margin-bottom: 8px;
+}
+#projects .card .tag {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  margin-bottom: 14px;
+}
+#projects .card .one {
+  font-family: var(--f-text);
+  font-size: 15.5px;
+  line-height: 1.45;
+  color: var(--fg-2);
+  margin-bottom: 18px;
+  flex-grow: 1;
+}
+#projects .card .arc {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--f-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: auto;
+}
+#projects .card .arc svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
+
+/* -------- Project deep-dives -------- */
+.project-section .proj-code {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+}
+.project-section .head-row {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+}
+.project-section .s-title { margin-bottom: 8px; }
+.tagline-row {
+  font-family: var(--f-pixel);
+  font-size: clamp(22px, 2.4vw, 32px);
+  line-height: 1.15;
+  color: var(--fg);
+  margin-bottom: 22px;
+  max-width: 1100px;
+}
+.quote {
+  font-family: var(--f-text);
+  font-size: 20px;
+  line-height: 1.45;
+  font-style: italic;
+  color: var(--accent-warm);
+  border-left: 2px solid var(--accent);
+  padding: 4px 0 4px 20px;
+  margin: 18px 0 22px;
+  max-width: 1100px;
+}
+.desc {
+  font-family: var(--f-text);
+  font-size: 16.5px;
+  line-height: 1.55;
+  color: var(--fg-2);
+  margin-bottom: 22px;
+  max-width: 1100px;
+}
+.feats {
+  list-style: none;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 36px;
+  margin-bottom: 22px;
+  font-family: var(--f-text);
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+.feats li::before {
+  content: "→ ";
+  color: var(--accent);
+  margin-right: 6px;
+}
+.vision {
+  font-family: var(--f-mono);
+  font-size: 13.5px;
+  line-height: 1.6;
+  color: var(--fg);
+  padding: 18px 22px;
+  border: 1px solid var(--line-faint);
+  background: rgba(15,15,15,0.4);
+  border-radius: 4px;
+  margin-bottom: 14px;
+}
+.vision .label {
+  color: var(--accent);
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  font-size: 11.5px;
+  margin-right: 10px;
+}
+.status-note {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  color: var(--fg-faint);
+  font-style: italic;
+}
+.reference-quote {
+  margin-top: 16px;
+  font-family: var(--f-text);
+  font-style: italic;
+  font-size: 15.5px;
+  color: var(--accent-warm);
+  border-top: 1px solid var(--line-faint);
+  padding-top: 16px;
+  max-width: 1100px;
+}
+
+/* -------- Lab / Now -------- */
+#now .gitlog {
+  font-family: var(--f-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  padding: 20px 24px;
+  background: rgba(15,15,15,0.55);
+  border: 1px solid var(--line-faint);
+  border-radius: 4px;
+  margin-bottom: 28px;
+  overflow-x: auto;
+  white-space: pre;
+}
+#now .gitlog .cmd { display: block; color: var(--fg-mute); margin-bottom: 8px; }
+#now .gitlog .hash { color: var(--accent); }
+#now .gitlog .msg { color: var(--fg); }
+
+#now .cols-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 36px 64px; }
+#now .cols-2 .col h3 {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 14px;
+  font-weight: 500;
+}
+#now .cols-2 .col p {
+  font-family: var(--f-text);
+  font-size: 17px;
+  line-height: 1.45;
+  color: var(--fg);
+}
+#now .cols-2 .col .bright { color: var(--accent); font-weight: 500; }
+#now .past {
+  margin-top: 24px;
+  font-family: var(--f-text);
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--fg-mute);
+  padding-top: 18px;
+  border-top: 1px solid var(--line-faint);
+}
+#now .past .tag {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  color: var(--fg-faint);
+  text-transform: uppercase;
+  margin-right: 14px;
+}
+
+/* -------- Dead Experiments -------- */
+#archive .ls-block {
+  font-family: var(--f-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--fg-mute);
+  padding: 14px 20px;
+  background: rgba(15,15,15,0.45);
+  border: 1px solid var(--line-faint);
+  border-radius: 4px;
+  white-space: pre;
+  margin-bottom: 16px;
+}
+#archive .ls-block .dir { color: var(--accent-warm); }
+.epigraph {
+  font-family: var(--f-text);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--accent-warm);
+  margin-bottom: 36px;
+  padding-left: 16px;
+  border-left: 2px solid var(--accent);
+}
+.entry { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--line-faint); }
+.entry:last-child { border-bottom: none; }
+.entry-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+.tag-killed {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--accent);
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(254,81,2,0.08);
+  font-weight: 500;
+}
+.slug-strike {
+  font-family: var(--f-display);
+  font-size: 32px;
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  color: var(--fg);
+  text-decoration: line-through;
+  text-decoration-color: var(--accent);
+}
+.entry-sub {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
+.entry h4 {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin: 16px 0 8px;
+  font-weight: 500;
+}
+.entry p {
+  font-family: var(--f-text);
+  font-size: 16px;
+  line-height: 1.5;
+  color: var(--fg-2);
+  margin-bottom: 6px;
+  max-width: 1100px;
+}
+.entry ul.why {
+  list-style: none;
+  margin: 8px 0 12px;
+  font-family: var(--f-text);
+  font-size: 15.5px;
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+.entry ul.why li {
+  position: relative;
+  padding-left: 22px;
+  margin-bottom: 10px;
+  max-width: 1100px;
+}
+.entry ul.why li::before {
+  content: "→";
+  color: var(--accent);
+  position: absolute;
+  left: 0;
+}
+.entry ul.why b { color: var(--fg); font-weight: 600; }
+.divider {
+  text-align: center;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  color: var(--fg-faint);
+  margin: 8px 0 24px;
+  letter-spacing: 0.4em;
+}
+
+/* -------- Connect -------- */
+.conn-rows {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-top: 10px;
+}
+.conn-rows a {
+  font-family: var(--f-mono);
+  font-size: 17px;
+  letter-spacing: -0.005em;
+  color: var(--fg);
+  display: inline-flex;
+  align-items: baseline;
+  gap: 18px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--line-faint);
+  transition: color var(--t-fast), border-color var(--t-fast);
+  text-transform: none;
+}
+.conn-rows a:hover, .conn-rows a:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  outline: none;
+}
+.conn-rows .k {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  min-width: 60px;
+}
+.conn-rows .arrow { color: var(--fg-mute); margin: 0 4px; }
+.final-cursor {
+  display: inline-block;
+  width: 0.5em;
+  height: 1em;
+  background: var(--accent);
+  margin-left: 10px;
+  vertical-align: -0.12em;
+  animation: blink 1.05s steps(1, end) infinite;
+}
+.source {
+  margin-top: 32px;
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+  padding-top: 18px;
+  border-top: 1px solid var(--line-faint);
+}
+.source a { color: var(--fg-mute); transition: color var(--t-fast); }
+.source a:hover, .source a:focus-visible { color: var(--accent); outline: none; }
+
+/* -------- Responsive -------- */
+@media (max-width: 920px) {
+  .blocks { grid-template-columns: 1fr; }
+  #projects .cards { grid-template-columns: 1fr; }
+  #stack .cols { grid-template-columns: 1fr; gap: 28px; }
+  #stack .col ul { grid-template-columns: 1fr; }
+  .feats { grid-template-columns: 1fr; }
+  #now .cols-2 { grid-template-columns: 1fr; }
+  body { font-size: 15px; }
+}
+@media (max-width: 600px) {
+  .chrome { padding: 0 22px; }
+  section { padding: calc(var(--chrome-h-top) + 28px) 5vw calc(var(--chrome-h-bot) + 28px); }
+  .crumb-wrap { font-size: 15px; }
+  .cv-link { font-size: 11px; padding: 8px 13px; }
+  .pager .pbtn { width: 32px; height: 32px; }
+  .stamp { font-size: 10.5px; }
+  .blocks { gap: 20px; }
+  .block-h { font-size: 24px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bg-ascii, .bg-halftone, .bg-grain { display: block; }
+  .section-inner { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .typer-line .caret, .final-cursor, .scroll-cue { animation: none !important; }
+  .scroller { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="bg-layer bg-ascii" aria-hidden="true"></div>
+<div class="bg-layer bg-halftone" aria-hidden="true"></div>
+<div class="bg-layer bg-grain" aria-hidden="true"></div>
+
+<header class="chrome chrome--top" role="banner">
+  <span class="crumb-wrap"><span class="dot"></span><span id="crumb">Hero</span></span>
+  <a class="cv-link" href="https://lucholabs.dev/cv" target="_blank" rel="noopener" aria-label="View CV at lucholabs.dev/cv (opens in new tab)">View CV ↗</a>
+</header>
+
+<main class="scroller" id="scroller">
+
+  <section id="hero" aria-labelledby="hero-title">
+    <div class="section-inner">
+      <div class="hero-stamp">— LuchoLabs.dev · The Lab · v1.0</div>
+      <div class="wordmark" id="hero-title">lucholabs<em>.dev/lab</em></div>
+      <div class="tagline">I build AI-powered systems and <em style="font-style:normal;color:var(--accent);">automation infrastructure.</em></div>
+      <div class="typer-line">
+        <span class="label">let's talk about:</span> <span id="typed"></span><span class="caret idle" id="typer-caret" aria-hidden="true"></span>
+      </div>
+      <div class="sub">Bogotá · Remote · C1 English (IELTS Academic 7.0)</div>
+    </div>
+    <div class="scroll-cue" aria-hidden="true">↓ scroll</div>
+  </section>
+
+  <section id="manifesto" aria-labelledby="manifesto-title">
+    <div class="section-inner">
+      <div class="super">Manifesto — what runs through every project</div>
+      <h2 class="s-title" id="manifesto-title">How I <em>Build.</em></h2>
+      <div class="blocks">
+        <div class="block">
+          <div class="block-h"><span class="n">01.</span>Systems Thinking</div>
+          <div class="block-body">Real automation isn't writing scripts. It's finding the seam where a workflow leaks — friction between APIs, hidden manual steps, missing observability — and rebuilding it. The open-source live-captioning system in my thesis didn't optimize a model; it closed a tooling gap that locked hearing-impaired students out of lectures. The same lens runs through every project here.</div>
+        </div>
+        <div class="block">
+          <div class="block-h"><span class="n">02.</span>AI as Infrastructure</div>
+          <div class="block-body">LLMs aren't the product; they're a runtime. The Product Review Classifier runs Groq's llama-3.1-8b-instant behind n8n as a workflow primitive — like Postgres or Redis, but for natural language. The interesting work is wiring AI into systems where it has to be reliable, not where it has to be impressive.</div>
+        </div>
+        <div class="block">
+          <div class="block-h"><span class="n">03.</span>Cross-Domain Vision</div>
+          <div class="block-body">Accessibility tooling adopted by two Colombian institutions. A WhatsApp-first utility-disruption layer for Bogotá. Local-first finance over Colombian bank exports. Phishing protection tuned for elderly users. The shape isn't a vertical; it's a refusal to over-specialize when the plumbing is missing everywhere.</div>
+        </div>
+        <div class="block">
+          <div class="block-h"><span class="n">04.</span>Builder-Lab Identity</div>
+          <div class="block-body">/lab is what it says. Some experiments are live (Boveda, Phishing Shield). Some shipped and quiet (Product Review Classifier). Some are archived because the math didn't work (HayCorte, Klipper Copilot — postmortems below). The credibility isn't a hit rate; it's the willingness to write the postmortem.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="thesis" aria-labelledby="thesis-title">
+    <div class="section-inner">
+      <div class="super">Thesis — the project that taught me cross-domain plumbing</div>
+      <h2 class="s-title" id="thesis-title">Captioning <em>Lectures.</em></h2>
+      <div class="thesis-title">Open-Source Live Captioning System for Hearing-Impaired Students</div>
+      <div class="thesis-sub">B.Sc. Systems Engineering · Universidad ECCI · 2024 · Meritorious</div>
+      <span class="pill live">Live · In Use · 2024–Present</span>
+      <div class="meta-row" style="margin-top:20px;"><span class="k">Adopted by</span><span>SENA Regional Amazonas · Universidad ECCI</span></div>
+      <div class="meta-row dim"><span class="k">Stack</span><span>Node.js · Mozilla DeepSpeech · NGINX · Custom Dictionary Engine</span></div>
+      <div class="impact">Built during final semester after a hearing-impaired classmate had no way to follow lectures in real time. The system generates live subtitles from the teacher's voice directly to the student's screen and stores a full transcript for later review. Adopted by two Colombian academic institutions. Zero licensing cost. Deployable by any institution on open source software alone.</div>
+      <div class="footer-note">— the project that taught me what cross-domain plumbing really means.</div>
+    </div>
+  </section>
+
+  <section id="stack" aria-labelledby="stack-title">
+    <div class="section-inner">
+      <div class="super">Stack — primary runtime + tooling</div>
+      <h2 class="s-title" id="stack-title">The <em>Tools.</em></h2>
+      <div class="cols">
+        <div class="col">
+          <h3>Core /</h3>
+          <ul>
+            <li>Python</li>
+            <li>FastAPI</li>
+            <li>n8n</li>
+            <li>REST APIs</li>
+            <li>Linux</li>
+          </ul>
+        </div>
+        <div class="col">
+          <h3>Tooling /</h3>
+          <ul>
+            <li>PostgreSQL</li>
+            <li>SQLAlchemy</li>
+            <li>Webhooks</li>
+            <li>Postman</li>
+            <li>Make</li>
+          </ul>
+        </div>
+      </div>
+      <div class="creds"><span class="k">Credentials —</span>AI Automation Engineering · Coderhouse · 2025</div>
+    </div>
+  </section>
+
+  <section id="projects" aria-labelledby="projects-title">
+    <div class="section-inner">
+      <div class="super">Projects — three ecosystems treating AI as infrastructure</div>
+      <h2 class="s-title" id="projects-title">Three <em>Ecosystems.</em></h2>
+      <div class="cards">
+        <a class="card" href="#bvd">
+          <div class="code">BVD · 06</div>
+          <h3>Boveda</h3>
+          <div class="tag">Fintech · Local-first OS</div>
+          <div class="one">Personal finance dashboard for Colombian bank accounts — local-first, programmable, yours.</div>
+          <div class="arc"><span>Dashboard → financial brain</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+        </a>
+        <a class="card" href="#phs">
+          <div class="code">PHS · 07</div>
+          <h3>Anti-Phishing Shield</h3>
+          <div class="tag">Cybersecurity · Accessibility</div>
+          <div class="one">Open source email phishing protection for elderly users — plain-language warnings, family-installable.</div>
+          <div class="arc"><span>Single check → ISP-level rollout</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+        </a>
+        <a class="card" href="#sfm">
+          <div class="code">SFM · 08</div>
+          <h3>SUPERFARM</h3>
+          <div class="tag">Agri-AI · Orchestration</div>
+          <div class="one">Open agricultural intelligence infrastructure — modular runtime for specialized agricultural agents.</div>
+          <div class="arc"><span>Harness → operating layer for agri</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section id="bvd" class="project-section" aria-labelledby="bvd-title">
+    <div class="section-inner">
+      <div class="proj-code">BVD · 06 — Project</div>
+      <div class="head-row">
+        <h2 class="s-title" id="bvd-title">Bo<em>veda.</em></h2>
+        <span class="pill progress">In Progress</span>
+      </div>
+      <div class="tagline-row">Personal finance dashboard for Colombian bank accounts.</div>
+      <div class="quote">"Banks own your transactions. They shouldn't own how you understand them."</div>
+      <div class="desc">A local-first fintech experiment exploring structured financial data, rule-based automation, and programmable workflows built on top of Colombian bank statement exports.</div>
+      <ul class="feats">
+        <li>structured imports from Colombian bank statement exports</li>
+        <li>rule-based categorization (no ML required for the boring 90%)</li>
+        <li>programmable workflows on top of your real ledger</li>
+        <li>local-first storage — your data stays on your machine</li>
+      </ul>
+      <div class="vision"><span class="label">Long-term →</span>local imports → rule layer → query DSL → fully programmable personal finance</div>
+      <div class="status-note">— stack: Python · FastAPI · SQLite · SQLAlchemy · React</div>
+    </div>
+  </section>
+
+  <section id="phs" class="project-section" aria-labelledby="phs-title">
+    <div class="section-inner">
+      <div class="proj-code">PHS · 07 — Project</div>
+      <div class="head-row">
+        <h2 class="s-title" id="phs-title">Anti-Phishing <em>Shield.</em></h2>
+        <span class="pill prototype">Prototype</span>
+      </div>
+      <div class="tagline-row">Open source email phishing protection for elderly users.</div>
+      <div class="quote">"Security tools built for engineers fail the people who need them most."</div>
+      <div class="desc">An open source tool designed to help third-age users identify and avoid email phishing attacks. Analyzes suspicious emails and provides plain-language warnings tailored for non-technical users.</div>
+      <ul class="feats">
+        <li>plain-language risk explanations (no jargon, no scores)</li>
+        <li>UX tuned for third-age users — large type, slow defaults</li>
+        <li>open source so families can run it themselves</li>
+        <li>email-pattern analysis without sending content to third parties</li>
+      </ul>
+      <div class="vision"><span class="label">Long-term →</span>single-email checks → email-account integration → family-installable forwarding inbox → ISP-level rollout</div>
+      <div class="status-note">— stack: Python · Open Source · Email Analysis · Accessibility</div>
+    </div>
+  </section>
+
+  <section id="sfm" class="project-section has-overflow" aria-labelledby="sfm-title">
+    <div class="section-inner">
+      <div class="proj-code">SFM · 08 — Project</div>
+      <div class="head-row">
+        <h2 class="s-title" id="sfm-title"><em>Super</em>farm.</h2>
+        <span class="pill research">Research</span>
+      </div>
+      <div class="tagline-row">Open agricultural intelligence infrastructure.</div>
+      <div class="quote">"What if agricultural intelligence itself became modular, open, inspectable, and accessible?"</div>
+      <div class="desc">An open-source runtime and orchestration harness for agricultural AI agents — not a chatbot, not a farm app, not another AI wrapper. A modular execution environment where specialized agricultural agents collaborate on shared farm memory, sensors, workflows, and historical context. A farm is a living operational ecosystem — climate, soil, water, animals, crops, finance, logistics, and decisions continuously affecting each other. The intelligence layer should be one too.</div>
+      <ul class="feats">
+        <li>agent runtime — specialized agricultural agents (SoilScientist, WeatherAgent, HydroponicsAdvisor, ChickenFarmer, CompostEngineer, FinancialAdvisor, IoTDesigner, ScaleUpStrategist) collaborate on the same farm</li>
+        <li>shared farm context — geography, climate, resources, infrastructure, finance, telemetry, and operational history as one persistent model</li>
+        <li>brain router — Claude, OpenAI, Gemini, Ollama, local models; pluggable per task</li>
+        <li>tool layer — weather APIs, GIS, IoT sensors, telemetry, vector DBs, financial workflows</li>
+        <li>open source by design — local deployment, inspectability, technological sovereignty</li>
+      </ul>
+      <div class="vision"><span class="label">Long-term →</span>runtime foundation → specialized agents → sensor + telemetry integration → ecosystem expansion → open agricultural intelligence infrastructure</div>
+      <div class="status-note">— currently in architectural & research phase. validating runtime, orchestration, shared-context models, and modular agent execution.</div>
+      <div class="reference-quote">"Linux became OS infrastructure. Kubernetes became orchestration infrastructure. ROS became robotics infrastructure. SUPERFARM explores the same shape for agriculture."</div>
+    </div>
+  </section>
+
+  <section id="now" aria-labelledby="now-title">
+    <div class="section-inner">
+      <div class="super">The Lab — recent commits + what's next</div>
+      <h2 class="s-title" id="now-title">Now &amp; <em>Next.</em></h2>
+      <div class="gitlog" role="img" aria-label="recent commits"><span class="cmd">$ git log --oneline -n 8 origin/main</span>
+<span class="hash">a4f1c2e</span>  <span class="msg">chore: add Google Search Console verification file</span>
+<span class="hash">91e8b03</span>  <span class="msg">feat(blog): launch blog with MDX, SSR prerender, RSS, sitemap, and OG metadata</span>
+<span class="hash">0acf5d8</span>  <span class="msg">fix(blog): resolve INEFFECTIVE_DYNAMIC_IMPORT via slug-keyed MDX loader map</span>
+<span class="hash">77b2af1</span>  <span class="msg">chore: remove dead build.sh, ignore graphify-out directory</span>
+<span class="hash">5d0e1ab</span>  <span class="msg">feat(blog): final wiring — main nav blog link, page titles, 404 page</span>
+<span class="hash">d3a90fe</span>  <span class="msg">chore(deploy): verify vercel.json rewrites handle blog routes</span>
+<span class="hash">c1f9d44</span>  <span class="msg">feat(blog): add public/blog/og/ directory and OG image convention docs</span>
+<span class="hash">2eab0a7</span>  <span class="msg">feat(blog): add sitemap generator replacing static sitemap.xml</span></div>
+
+      <div class="cols-2">
+        <div class="col">
+          <h3>Now /</h3>
+          <p>Boveda · Anti-Phishing Shield · Automation Workflows</p>
+        </div>
+        <div class="col">
+          <h3>Next /</h3>
+          <p><span class="bright">[talk]</span> AI &amp; Cybersecurity Forum — Bogotá, May 2026 — <i>"Cybersecurity in the Golden Era of AI: agent models, emerging threats, and prompt injection attacks."</i></p>
+        </div>
+      </div>
+      <div class="past"><span class="tag">[talk · past]</span>Cybersecurity Forum — Bogotá, 2025 — Panelist on network security and infrastructure</div>
+    </div>
+  </section>
+
+  <section id="archive" class="has-overflow" aria-labelledby="archive-title">
+    <div class="section-inner">
+      <div class="super">Archive — postmortems from experiments that died</div>
+      <h2 class="s-title" id="archive-title">Dead <em>Experiments.</em></h2>
+      <div class="ls-block">total 2
+drwx------  1 lual  staff  <span class="dir">haycorte/</span>
+drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
+      <div class="epigraph">"Most experiments die. The ones that live earned it."</div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <span class="tag-killed">Killed</span>
+          <span class="slug-strike">haycorte</span>
+          <span class="entry-sub">urban disruption intelligence — bogotá</span>
+        </div>
+        <h4>What it was</h4>
+        <p>WhatsApp-first infrastructure intelligence platform for utility outages (water / electricity / gas) in Bogotá. Bridged the gap between official utility info and how residents already share information in WhatsApp groups.</p>
+        <h4>Why it's strong</h4>
+        <p>Real communication problem; the gap is real.</p>
+        <h4>Why it died</h4>
+        <ul class="why">
+          <li><b>Infrastructure dependence.</b> WhatsApp automation, utility scraping, geolocation, cloud APIs — none of it under your control. Continuous reliability required from day one because users only show up during stressful events; one scraper failure or blocked WA flow burns trust instantly.</li>
+          <li><b>Business-structure mismatch.</b> Behaves like a public-utility layer; monetizes like SaaS. Individuals won't pay for outage info. The strongest path (building admins / property mgmt) needs manual sales, onboarding, local ops.</li>
+          <li><b>Episodic engagement.</b> Users only care during outages. Retention depends on scheduled maintenance alerts and community participation, which delays self-sustainability.</li>
+          <li><b>Capital vs. operational burden.</b> Infrastructure-heavy with insufficient early revenue to justify the load. Without capital or a dedicated ops layer, it operates at a loss for too long.</li>
+        </ul>
+        <div class="footer-note">— strategically interesting as a future utility-data layer. for now: archived.</div>
+      </div>
+
+      <div class="divider">— · —</div>
+
+      <div class="entry">
+        <div class="entry-head">
+          <span class="tag-killed">Killed</span>
+          <span class="slug-strike">klipper-copilot</span>
+          <span class="entry-sub">ai companion for orcaslicer + klipper</span>
+        </div>
+        <h4>What it was</h4>
+        <p>An AI-assisted companion layer for OrcaSlicer and Klipper — analyzing slicer profiles, validating printer constraints, and recommending safer print settings for high-performance 3D printers.</p>
+        <h4>Why it's strong</h4>
+        <p>Real systems-engineering pain; tuning these printers is genuinely hard.</p>
+        <h4>Why it died</h4>
+        <ul class="why">
+          <li><b>Infra cost &gt; realistic revenue.</b> Reliable optimization needs large datasets of printer configs and failures, telemetry ingestion, hardware-specific tuning models, and continuous testing across many printer variants. Support burden disproportionate to likely revenue.</li>
+          <li><b>Audience economics.</b> Target users (advanced hobbyists) are technically capable, price-sensitive, and resistant to subscriptions — hard acquisition and retention without a large community presence or distribution channel.</li>
+          <li><b>Trust-fragile category.</b> Inconsistent recommendations or one failed print suggestion burns trust fast. High API and hosting costs while debugging edge cases make the early stage punishing.</li>
+          <li><b>Strategic fit.</b> Better classed as a systems-engineering experiment than a product right now; infrastructure and validation requirements exceed probable short-term return. A loss-making launch is strategically unrealistic at this stage.</li>
+        </ul>
+        <div class="footer-note">— technically interesting; product-market gravity insufficient. archived.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="connect" aria-labelledby="connect-title">
+    <div class="section-inner">
+      <div class="super">Connect — channels</div>
+      <h2 class="s-title" id="connect-title">Let's <em>Talk.</em></h2>
+      <div class="conn-rows">
+        <a href="https://github.com/lualducor" target="_blank" rel="noopener"><span class="k">git</span><span class="arrow">→</span>github.com/lualducor</a>
+        <a href="https://www.linkedin.com/in/luis-alberto-duarte-97748171/" target="_blank" rel="noopener"><span class="k">in</span><span class="arrow">→</span>linkedin.com/in/luis-alberto-duarte-97748171</a>
+        <a href="mailto:lualducor@gmail.com"><span class="k">mail</span><span class="arrow">→</span>lualducor@gmail.com<span class="final-cursor" aria-hidden="true"></span></a>
+      </div>
+      <div class="source">— Source · <a href="https://github.com/lualducor/lucholabs-site" target="_blank" rel="noopener">github.com/lualducor/lucholabs-site</a></div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="chrome chrome--bot" role="contentinfo">
+  <div class="stamp">
+    <span id="stamp-current">01</span><span class="stamp-sep">/</span><span>11</span><span class="stamp-sep">—</span><span id="stamp-label">Hero</span>
+  </div>
+  <div class="pager">
+    <button class="pbtn" id="pbtn-prev" aria-label="previous section" disabled>
+      <svg viewBox="0 0 24 24"><path d="M14 6l-6 6 6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+    <button class="pbtn" id="pbtn-next" aria-label="next section">
+      <svg viewBox="0 0 24 24"><path d="M10 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+    </button>
+  </div>
+</footer>
+
+<script>
+(function() {
+  'use strict';
+
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // -------- Typewriter (same 150-word list) --------
+  const TYPER_WORDS = [
+    'automation', 'n8n', 'FastAPI', 'Python', 'Linux', 'PostgreSQL', 'SQLAlchemy', 'webhooks', 'REST APIs', 'Postman',
+    'Make.com', 'SQLite', 'React', 'TypeScript', 'Vite', 'Node.js', 'Mozilla DeepSpeech', 'NGINX', 'Groq', 'Claude',
+    'OpenAI', 'Gemini', 'Ollama', 'local models', 'vector databases', 'LoRaWAN', 'GIS systems', 'IoT sensors', 'PostGIS', 'Leaflet',
+    'LLMs as runtime', 'AI as infrastructure', 'agent orchestration', 'multi-agent systems', 'shared memory', 'model routing', 'prompt injection', 'tool use', 'structured outputs', 'function calling',
+    'workflow primitives', 'inference reliability', 'AI workflows', 'agent guardrails', 'llama-3.1-8b', 'shared farm context', 'operational memory', 'brain routers', 'specialized agents', 'agricultural intelligence',
+    'personal finance', 'Colombian banks', 'bank statement exports', 'rule-based categorization', 'programmable ledgers', 'local-first data', 'query DSLs', 'email phishing', 'third-age UX', 'plain-language warnings',
+    'accessibility-first design', 'open security tools', 'family-installable inboxes', 'modular runtimes', 'soil reasoning', 'weather agents', 'hydroponic planning', 'livestock optimization', 'compost coordination', 'irrigation management',
+    'financial forecasting', 'crop analysis', 'farm telemetry', 'open agricultural standards', 'utility outages', 'WhatsApp-first systems', 'community validation', 'infrastructure intelligence', 'urban disruption', 'live captioning',
+    'speech recognition', 'accessibility for the hearing-impaired', 'classroom inclusion', 'zero-licensing tooling', 'open-source impact',
+    'systems thinking', 'cross-domain work', 'the seams between APIs', 'where workflows leak', 'observability', 'reliability over impressiveness', 'technological sovereignty', 'inspectability', 'local deployment', 'open source',
+    'distributed research', 'democratized intelligence', 'augmenting decisions', 'composable infrastructure', 'modular by default', 'composable by design', 'inspectable agents', 'portable runtimes', 'retrieval as a primitive', 'structured imports',
+    'the boring 90%', 'ambient automation', 'self-hostable AI', 'low-connectivity regions', 'open by default',
+    'the lab', '/archive/dead', '/lab/now', 'postmortems', 'shipped quietly', 'iteration', 'ambient experiments', 'retros', 'builder labs', 'the willingness to write the postmortem',
+    'phosphor green', 'matrix rain', 'terminals', 'monospace', 'the console', 'ASCII', 'cyberpunk HUDs', 'polybar', 'Linux Mint', 'neon green',
+    'Bogotá', 'Colombia', 'LATAM', 'remote-async', 'C1 English', 'cybersecurity', 'prompt-injection defense', 'agent threats', 'the golden era of AI', 'emerging cybersecurity',
+    'network security', 'infrastructure security', 'regional realities', 'microregions', 'cooperatives',
+    'shipping > announcing', 'the postmortem file', 'README-driven design', 'saying no to scope', 'the willingness to delete'
+  ];
+
+  function shuffled(arr) {
+    const a = arr.slice();
+    for (let i = a.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [a[i], a[j]] = [a[j], a[i]];
+    }
+    return a;
+  }
+
+  const typedEl = document.getElementById('typed');
+  const caret = document.getElementById('typer-caret');
+
+  function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+  async function typewriter() {
+    if (reduceMotion) { typedEl.textContent = TYPER_WORDS[0]; return; }
+    let queue = shuffled(TYPER_WORDS);
+    let qi = 0;
+    while (true) {
+      const word = queue[qi];
+      caret.classList.remove('idle');
+      for (let i = 0; i <= word.length; i++) {
+        typedEl.textContent = word.slice(0, i);
+        await sleep(32 + Math.random() * 14);
+      }
+      caret.classList.add('idle');
+      await sleep(1200);
+      caret.classList.remove('idle');
+      for (let i = word.length; i >= 0; i--) {
+        typedEl.textContent = word.slice(0, i);
+        await sleep(20 + Math.random() * 8);
+      }
+      caret.classList.add('idle');
+      await sleep(140);
+      qi++;
+      if (qi >= queue.length) { queue = shuffled(TYPER_WORDS); qi = 0; }
+    }
+  }
+  typewriter();
+
+  // -------- Section tracking + chrome + hash --------
+  const scroller = document.getElementById('scroller');
+  const sections = Array.from(document.querySelectorAll('section[id]'));
+  const crumb = document.getElementById('crumb');
+  const stampCurrent = document.getElementById('stamp-current');
+  const stampLabel = document.getElementById('stamp-label');
+  const htmlEl = document.documentElement;
+  const prevBtn = document.getElementById('pbtn-prev');
+  const nextBtn = document.getElementById('pbtn-next');
+
+  const SECTION_LABELS = {
+    hero: 'Hero',
+    manifesto: 'Manifesto',
+    thesis: 'Thesis',
+    stack: 'Stack',
+    projects: 'Projects',
+    bvd: 'Boveda',
+    phs: 'Phishing Shield',
+    sfm: 'Superfarm',
+    now: 'Now & Next',
+    archive: 'Archive',
+    connect: 'Connect'
+  };
+
+  let currentSectionId = 'hero';
+  let currentIdx = 0;
+
+  function applyIndex(idx) {
+    currentIdx = idx;
+    const s = sections[idx];
+    currentSectionId = s.id;
+    const label = SECTION_LABELS[s.id] || s.id;
+    crumb.textContent = label;
+    stampLabel.textContent = label;
+    stampCurrent.textContent = String(idx + 1).padStart(2, '0');
+    htmlEl.setAttribute('data-section', s.id);
+    prevBtn.disabled = idx <= 0;
+    nextBtn.disabled = idx >= sections.length - 1;
+    if (history.replaceState) history.replaceState(null, '', '#' + s.id);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    let best = null, bestRatio = 0;
+    for (const e of entries) {
+      if (e.intersectionRatio > bestRatio) { best = e.target; bestRatio = e.intersectionRatio; }
+      if (e.intersectionRatio > 0.2) e.target.classList.add('in-view');
+    }
+    if (best && bestRatio > 0.4 && best.id !== currentSectionId) {
+      const idx = sections.findIndex(x => x.id === best.id);
+      if (idx >= 0) applyIndex(idx);
+    }
+  }, { root: scroller, threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] });
+  sections.forEach(s => observer.observe(s));
+
+  // Initial hash routing
+  if (location.hash && location.hash.length > 1) {
+    const target = document.getElementById(location.hash.slice(1));
+    if (target) requestAnimationFrame(() => requestAnimationFrame(() => target.scrollIntoView({ behavior: 'auto', block: 'start' })));
+  }
+
+  // Pager
+  function goto(idx) {
+    idx = Math.max(0, Math.min(sections.length - 1, idx));
+    sections[idx].scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  prevBtn.addEventListener('click', () => goto(currentIdx - 1));
+  nextBtn.addEventListener('click', () => goto(currentIdx + 1));
+
+  // Keyboard nav
+  document.addEventListener('keydown', (e) => {
+    if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+    let nextIdx = currentIdx;
+    if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) nextIdx = currentIdx + 1;
+    else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) nextIdx = currentIdx - 1;
+    else if (e.key === 'Home') nextIdx = 0;
+    else if (e.key === 'End') nextIdx = sections.length - 1;
+    else return;
+    if (nextIdx !== currentIdx) { e.preventDefault(); goto(nextIdx); }
+  });
+
+  sections[0].classList.add('in-view');
+})();
+</script>
+
+</body>
+</html>
