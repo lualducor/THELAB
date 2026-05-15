@@ -35,14 +35,16 @@
   --fg-faint: #787878;
   --line: #fffaee;
   --line-faint: rgba(255, 250, 238, 0.18);
-  --accent: #fe5102;
-  --accent-warm: #ffcd9f;
+  --accent: #00FF41;
+  --accent-rgb: 0, 255, 65;
+  --accent-warm: #88B488;
 
-  --status-progress: #ffcd9f;
+  --status-progress: rgba(34, 197, 94, 0.85);
   --status-prototype: #a3a3a3;
   --status-research: #ddd;
-  --status-live: #fe5102;
-  --killed: #fe5102;
+  --status-live: rgba(0, 255, 65, 0.95);
+  --killed: #ff6b4a;
+  --killed-rgb: 255, 107, 74;
 
   --chrome-h-top: 76px;
   --chrome-h-bot: 64px;
@@ -164,7 +166,7 @@ a { color: inherit; text-decoration: none; }
 .cv-link:hover, .cv-link:focus-visible {
   color: var(--accent);
   border-color: var(--accent);
-  background: rgba(254, 81, 2, 0.05);
+  background: rgba(var(--accent-rgb), 0.05);
   outline: none;
 }
 
@@ -199,7 +201,7 @@ a { color: inherit; text-decoration: none; }
 .pager .pbtn:hover, .pager .pbtn:focus-visible {
   border-color: var(--accent);
   color: var(--accent);
-  background: rgba(254, 81, 2, 0.06);
+  background: rgba(var(--accent-rgb), 0.06);
   outline: none;
 }
 .pager .pbtn svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 2; }
@@ -450,7 +452,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   border: 1px solid currentColor;
   font-weight: 500;
 }
-.pill.live { color: var(--accent); border-color: var(--accent); background: rgba(254,81,2,0.08); }
+.pill.live { color: var(--accent); border-color: var(--accent); background: rgba(var(--accent-rgb), 0.08); }
 .pill.progress { color: var(--accent-warm); }
 .pill.prototype { color: var(--fg-mute); }
 .pill.research { color: var(--fg-2); }
@@ -517,7 +519,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 }
 #projects .card:hover, #projects .card:focus-visible {
   border-color: var(--accent);
-  background: rgba(254,81,2,0.04);
+  background: rgba(var(--accent-rgb), 0.04);
   transform: translateY(-2px);
   outline: none;
 }
@@ -751,11 +753,11 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   font-size: 11px;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--accent);
-  border: 1px solid var(--accent);
+  color: var(--killed);
+  border: 1px solid var(--killed);
   padding: 4px 10px;
   border-radius: 999px;
-  background: rgba(254,81,2,0.08);
+  background: rgba(var(--killed-rgb), 0.08);
   font-weight: 500;
 }
 .slug-strike {
@@ -765,7 +767,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   letter-spacing: -0.025em;
   color: var(--fg);
   text-decoration: line-through;
-  text-decoration-color: var(--accent);
+  text-decoration-color: var(--killed);
 }
 .entry-sub {
   font-family: var(--f-mono);
@@ -914,7 +916,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 
 <header class="chrome chrome--top" role="banner">
   <span class="crumb-wrap"><span class="dot"></span><span id="crumb">Hero</span></span>
-  <a class="cv-link" href="https://lucholabs.dev/cv" target="_blank" rel="noopener" aria-label="View CV at lucholabs.dev/cv (opens in new tab)">View CV ↗</a>
+  <a class="cv-link" href="https://lucholabs.dev" target="_blank" rel="noopener" aria-label="View CV at lucholabs.dev (opens in new tab)">View CV ↗</a>
 </header>
 
 <main class="scroller" id="scroller">
@@ -1186,7 +1188,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
         <a href="https://www.linkedin.com/in/luis-alberto-duarte-97748171/" target="_blank" rel="noopener"><span class="k">in</span><span class="arrow">→</span>linkedin.com/in/luis-alberto-duarte-97748171</a>
         <a href="mailto:lualducor@gmail.com"><span class="k">mail</span><span class="arrow">→</span>lualducor@gmail.com<span class="final-cursor" aria-hidden="true"></span></a>
       </div>
-      <div class="source">— Source · <a href="https://github.com/lualducor/lucholabs-site" target="_blank" rel="noopener">github.com/lualducor/lucholabs-site</a></div>
+      <div class="source">— Source · <a href="https://github.com/lualducor/THELAB" target="_blank" rel="noopener">github.com/lualducor/THELAB</a></div>
     </div>
   </section>
 
