@@ -20,7 +20,7 @@ No build step. No dependencies beyond Google Fonts (JetBrains Mono + VT323). Ope
 4. Stack
 5. Projects index
 6. Boveda
-7. Phishing Shield
+7. Anti-Phishing Shield
 8. SUPERFARM
 9. The Lab / Now — faux `git log` of recent commits
 10. Dead Experiments — `/archive/dead` with postmortems
