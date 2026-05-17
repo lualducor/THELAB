@@ -1,0 +1,14 @@
+{
+  "name": "thelab",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "lucholabs.dev/lab — editorial deck. Static HTML with eta templating that consumes content.json from the CV repo.",
+  "scripts": {
+    "build": "node build.mjs",
+    "dev": "node build.mjs && python3 -m http.server 8000"
+  },
+  "devDependencies": {
+    "eta": "^3.4.0"
+  }
+}
