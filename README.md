@@ -1,6 +1,6 @@
 # THELAB
 
-Source for `lucholabs.dev/lab` — a single-page site for projects, manifesto, and now/next. The deck-style editorial version is the default entrypoint, and the matrix console variant is preserved as an alternate file.
+Source for `lucholabs.dev/lab` — a single-page site for projects, manifesto, and now/next. The deck-style editorial version is the default entrypoint.
 
 ## Variants
 
@@ -13,14 +13,6 @@ Source for `lucholabs.dev/lab` — a single-page site for projects, manifesto, a
 - Vibe: editorial print/magazine, brutalist warm, "Born to Build"
 - Imports the deck's content patterns: "Three **Ecosystems.**" framing, `BVD · 06` project codes, `<em>` orange-italic emphasis on key syllables
 
-### `index-matrix.html` — Phosphor / Matrix Console
-- Palette: `#050a05` background, `#00FF41` phosphor green, soft glow
-- Typography: JetBrains Mono throughout (+ VT323 for occasional display moments)
-- Background: animated matrix-rain canvas (falling glyphs, ~30% opacity)
-- Chrome: terminal-style top bar (`lucholabs:~/lab $ <section>`), bottom progress bar
-- Section register: `$ cat manifesto.md`, `$ ls projects/`, `$ git log --oneline`
-- Vibe: hacker terminal, phosphor CRT, cyberpunk HUD
-
 `index-deck-style.html` mirrors the default deck variant for direct editing/comparison.
 
 ## How to compare
@@ -30,7 +22,6 @@ git clone https://github.com/lualducor/THELAB
 cd THELAB
 python3 -m http.server 8000
 # open http://localhost:8000/index.html
-# then    http://localhost:8000/index-matrix.html
 ```
 
 Or just open each file directly in a browser.
