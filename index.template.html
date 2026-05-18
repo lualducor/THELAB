@@ -907,6 +907,37 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   .scroller { scroll-behavior: auto; }
 }
 </style>
+<% if (it.locale === 'es') { %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://lucholabs.dev/es/lab",
+  "url": "https://lucholabs.dev/es/lab",
+  "name": "Lab — Luis Alberto Duarte Cortés",
+  "description": "How I think about systems, AI, and infrastructure. Manifesto, project deep dives, and dead experiments from lucholabs.",
+  "isPartOf": { "@id": "https://lucholabs.dev/#website" },
+  "about": { "@id": "https://lucholabs.dev/#person" },
+  "primaryImageOfPage": { "@id": "https://lucholabs.dev/#person" },
+  "inLanguage": "es"
+}
+</script>
+<% } else { %>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://lucholabs.dev/lab",
+  "url": "https://lucholabs.dev/lab",
+  "name": "Lab — Luis Alberto Duarte Cortés",
+  "description": "How I think about systems, AI, and infrastructure. Manifesto, project deep dives, and dead experiments from lucholabs.",
+  "isPartOf": { "@id": "https://lucholabs.dev/#website" },
+  "about": { "@id": "https://lucholabs.dev/#person" },
+  "primaryImageOfPage": { "@id": "https://lucholabs.dev/#person" },
+  "inLanguage": "en"
+}
+</script>
+<% } %>
 <script defer data-domain="lucholabs.dev" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
