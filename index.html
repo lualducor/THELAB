@@ -360,6 +360,10 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 .tw-pending #hero .scroll-cue {
   visibility: hidden;
 }
+/* -------- Section title one-shot reveal (on scroll-into-view) -------- */
+.tw-titles-pending section:not(#hero) .s-title:not(.tw-shown) {
+  visibility: hidden;
+}
 .reveal-caret {
   display: inline-block;
   width: 0.5em;
@@ -957,7 +961,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 (function () {
   try {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    document.documentElement.classList.add('tw-pending');
+    document.documentElement.classList.add('tw-pending', 'tw-titles-pending');
   } catch (e) { /* no-op */ }
 })();
 </script>
@@ -1477,6 +1481,22 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
   let currentSectionId = 'hero';
   let currentIdx = 0;
 
+  const revealedSectionTitles = new Set();
+  function revealSectionTitle(section) {
+    if (reduceMotion || !section || revealedSectionTitles.has(section.id)) return;
+    const title = section.querySelector('.s-title');
+    if (!title) return;
+    revealedSectionTitles.add(section.id);
+    const h = title.getBoundingClientRect().height;
+    if (h > 0) title.style.minHeight = h + 'px';
+    const originalHtml = title.innerHTML;
+    title.innerHTML = '';
+    title.classList.add('tw-shown');
+    typeHTML(title, originalHtml, 55).then(() => {
+      title.style.minHeight = '';
+    });
+  }
+
   function applyIndex(idx) {
     currentIdx = idx;
     const s = sections[idx];
@@ -1489,6 +1509,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     prevBtn.disabled = idx <= 0;
     nextBtn.disabled = idx >= sections.length - 1;
     if (history.replaceState) history.replaceState(null, '', '#' + s.id);
+    revealSectionTitle(s);
   }
 
   const observer = new IntersectionObserver((entries) => {
