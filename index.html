@@ -51,6 +51,7 @@
 
   --chrome-h-top: 76px;
   --chrome-h-bot: 64px;
+  --chrome-h: var(--chrome-h-top);
 
   --f-display: "Inter", "Helvetica Neue", Arial, sans-serif;
   --f-text: "Inter", "Helvetica Neue", Arial, sans-serif;
@@ -154,8 +155,14 @@ a { color: inherit; text-decoration: none; }
   text-transform: capitalize;
 }
 
-.cv-link {
+.chrome-links {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cv-link {
   font-family: var(--f-mono);
   font-size: 13px;
   letter-spacing: 0.16em;
@@ -171,6 +178,10 @@ a { color: inherit; text-decoration: none; }
   border-color: var(--accent);
   background: rgba(var(--accent-rgb), 0.05);
   outline: none;
+}
+
+.locale-toggle {
+  font-weight: 600;
 }
 
 /* Footer stamp + pager */
@@ -896,6 +907,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   .chrome { padding: 0 22px; }
   section { padding: calc(var(--chrome-h-top) + 28px) 5vw calc(var(--chrome-h-bot) + 28px); }
   .crumb-wrap { font-size: 15px; }
+  .chrome-links { gap: 8px; }
   .cv-link { font-size: 11px; padding: 8px 13px; }
   .pager .pbtn { width: 32px; height: 32px; }
   .stamp { font-size: 10.5px; }
@@ -935,8 +947,9 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 <header class="chrome chrome--top" role="banner">
   <span class="crumb-wrap"><span class="dot"></span><span id="crumb">Hero</span></span>
   <span class="chrome-links">
-    <a class="cv-link" href="https://lucholabs.dev/blog" target="_blank" rel="noopener" aria-label="Read the blog at lucholabs.dev/blog (opens in new tab)">Blog ↗</a>
-    <a class="cv-link" href="https://lucholabs.dev" target="_blank" rel="noopener" aria-label="View CV at lucholabs.dev (opens in new tab)">View CV ↗</a>
+        <a class="locale-toggle cv-link" href="https://lucholabs.dev/es/lab" aria-label="Cambiar a Español">ES</a>
+        <a class="cv-link" href="https://lucholabs.dev/blog" aria-label="Read the blog at lucholabs.dev/blog">Blog ↗</a>
+    <a class="cv-link" href="https://lucholabs.dev/" aria-label="View CV at lucholabs.dev/">View CV ↗</a>
   </span>
 </header>
 
@@ -948,7 +961,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
       <div class="wordmark" id="hero-title">lucholabs<em>.dev/lab</em></div>
       <div class="tagline">I build AI-powered systems and <em style="font-style:normal;color:var(--accent);">automation infrastructure.</em></div>
       <div class="typer-line">
-        <span class="label">let's talk about:</span> <span id="typed"></span><span class="caret idle" id="typer-caret" aria-hidden="true"></span>
+        <span class="label">let&#39;s talk about:</span> <span id="typed"></span><span class="caret idle" id="typer-caret" aria-hidden="true"></span>
       </div>
       <div class="sub">Bogotá · Remote · C1 English (IELTS Academic 7.0)</div>
     </div>
@@ -962,19 +975,19 @@ section.in-view .section-inner { opacity: 1; transform: none; }
       <div class="blocks">
         <div class="block">
           <div class="block-h"><span class="n">01.</span>Systems Thinking</div>
-          <div class="block-body">Real automation isn't writing scripts. It's finding the seam where a workflow leaks — friction between APIs, hidden manual steps, missing observability — and rebuilding it. The open-source live-captioning system in my thesis didn't optimize a model; it closed a tooling gap that locked hearing-impaired students out of lectures. The same lens runs through every project here.</div>
+          <div class="block-body">Real automation isn&#39;t writing scripts. It&#39;s finding the seam where a workflow leaks — friction between APIs, hidden manual steps, missing observability — and rebuilding it. The open-source live-captioning system in my thesis didn&#39;t optimize a model; it closed a tooling gap that locked hearing-impaired students out of lectures. The same lens runs through every project here.</div>
         </div>
         <div class="block">
           <div class="block-h"><span class="n">02.</span>AI as Infrastructure</div>
-          <div class="block-body">LLMs aren't the product; they're a runtime. The Product Review Classifier runs Groq's llama-3.1-8b-instant behind n8n as a workflow primitive — like Postgres or Redis, but for natural language. The interesting work is wiring AI into systems where it has to be reliable, not where it has to be impressive.</div>
+          <div class="block-body">LLMs aren&#39;t the product; they&#39;re a runtime. The Product Review Classifier runs Groq&#39;s llama-3.1-8b-instant behind n8n as a workflow primitive — like Postgres or Redis, but for natural language. The interesting work is wiring AI into systems where it has to be reliable, not where it has to be impressive.</div>
         </div>
         <div class="block">
           <div class="block-h"><span class="n">03.</span>Cross-Domain Vision</div>
-          <div class="block-body">Accessibility tooling adopted by two Colombian institutions. A WhatsApp-first utility-disruption layer for Bogotá. Local-first finance over Colombian bank exports. Phishing protection tuned for elderly users. The shape isn't a vertical; it's a refusal to over-specialize when the plumbing is missing everywhere.</div>
+          <div class="block-body">Accessibility tooling adopted by two Colombian institutions. A WhatsApp-first utility-disruption layer for Bogotá. Local-first finance over Colombian bank exports. Phishing protection tuned for elderly users. The shape isn&#39;t a vertical; it&#39;s a refusal to over-specialize when the plumbing is missing everywhere.</div>
         </div>
         <div class="block">
           <div class="block-h"><span class="n">04.</span>Builder-Lab Identity</div>
-          <div class="block-body">/lab is what it says. Some experiments are live (Boveda, Phishing Shield). Some shipped and quiet (Product Review Classifier). Some are archived because the math didn't work (HayCorte, Klipper Copilot — postmortems below). The credibility isn't a hit rate; it's the willingness to write the postmortem.</div>
+          <div class="block-body">/lab is what it says. Some experiments are live (Boveda, Phishing Shield). Some shipped and quiet (Product Review Classifier). Some are archived because the math didn&#39;t work (HayCorte, Klipper Copilot — postmortems below). The credibility isn&#39;t a hit rate; it&#39;s the willingness to write the postmortem.</div>
         </div>
       </div>
     </div>
@@ -990,7 +1003,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
       <div class="meta-row" style="margin-top:20px;"><span class="k">Adopted by</span><span>SENA Regional Amazonas · Universidad ECCI</span></div>
       <div class="meta-row dim"><span class="k">Stack</span><span>Node.js · Mozilla DeepSpeech · NGINX · Custom Dictionary Engine</span></div>
       <div class="meta-row dim"><span class="k">Publication</span><span><a href="https://repositorio.ecci.edu.co/entities/publication/7fd3d03e-a92f-4be0-8b53-f291f6337808" target="_blank" rel="noopener">ECCI institutional repository ↗</a></span></div>
-      <div class="impact">Built across 2022–2023 after a hearing-impaired classmate had no way to follow lectures in real time. The system generates live subtitles from the teacher's voice directly to the student's screen and stores a full transcript for later review. Completed before the 2024 graduation and awarded a Meritorious distinction. Adopted by two Colombian academic institutions. Zero licensing cost. Deployable by any institution on open source software alone.</div>
+      <div class="impact">Built across 2022–2023 after a hearing-impaired classmate had no way to follow lectures in real time. The system generates live subtitles from the teacher&#39;s voice directly to the student&#39;s screen and stores a full transcript for later review. Completed before the 2024 graduation and awarded a Meritorious distinction. Adopted by two Colombian academic institutions. Zero licensing cost. Deployable by any institution on open source software alone.</div>
       <div class="footer-note">— the project that taught me what cross-domain plumbing really means.</div>
     </div>
   </section>
@@ -1063,7 +1076,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
         <span class="pill progress">In Progress</span>
       </div>
       <div class="tagline-row">Personal finance dashboard for Colombian bank accounts.</div>
-      <div class="quote">"Banks own your transactions. They shouldn't own how you understand them."</div>
+      <div class="quote">&quot;Banks own your transactions. They shouldn&#39;t own how you understand them.&quot;</div>
       <div class="desc">A local-first fintech experiment exploring structured financial data, rule-based automation, and programmable workflows built on top of Colombian bank statement exports.</div>
       <ul class="feats">
         <li>structured imports from Colombian bank statement exports</li>
@@ -1084,7 +1097,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
         <span class="pill prototype">Prototype</span>
       </div>
       <div class="tagline-row">Open source email phishing protection for elderly users.</div>
-      <div class="quote">"Security tools built for engineers fail the people who need them most."</div>
+      <div class="quote">&quot;Security tools built for engineers fail the people who need them most.&quot;</div>
       <div class="desc">An open source tool designed to help third-age users identify and avoid email phishing attacks. Analyzes suspicious emails and provides plain-language warnings tailored for non-technical users.</div>
       <ul class="feats">
         <li>plain-language risk explanations (no jargon, no scores)</li>
@@ -1105,7 +1118,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
         <span class="pill research">Research</span>
       </div>
       <div class="tagline-row">Open agricultural intelligence infrastructure.</div>
-      <div class="quote">"What if agricultural intelligence itself became modular, open, inspectable, and accessible?"</div>
+      <div class="quote">&quot;What if agricultural intelligence itself became modular, open, inspectable, and accessible?&quot;</div>
       <div class="desc">An open-source runtime and orchestration harness for agricultural AI agents — not a chatbot, not a farm app, not another AI wrapper. A modular execution environment where specialized agricultural agents collaborate on shared farm memory, sensors, workflows, and historical context. A farm is a living operational ecosystem — climate, soil, water, animals, crops, finance, logistics, and decisions continuously affecting each other. The intelligence layer should be one too.</div>
       <ul class="feats">
         <li>agent runtime — specialized agricultural agents (SoilScientist, WeatherAgent, HydroponicsAdvisor, ChickenFarmer, CompostEngineer, FinancialAdvisor, IoTDesigner, ScaleUpStrategist) collaborate on the same farm</li>
@@ -1115,14 +1128,14 @@ section.in-view .section-inner { opacity: 1; transform: none; }
         <li>open source by design — local deployment, inspectability, technological sovereignty</li>
       </ul>
       <div class="vision"><span class="label">Long-term →</span>runtime foundation → specialized agents → sensor + telemetry integration → ecosystem expansion → open agricultural intelligence infrastructure</div>
-      <div class="status-note">— currently in architectural & research phase. validating runtime, orchestration, shared-context models, and modular agent execution.</div>
-      <div class="reference-quote">"Linux became OS infrastructure. Kubernetes became orchestration infrastructure. ROS became robotics infrastructure. SUPERFARM explores the same shape for agriculture."</div>
+      <div class="status-note">— currently in architectural &amp; research phase. validating runtime, orchestration, shared-context models, and modular agent execution.</div>
+      <div class="reference-quote">&quot;Linux became OS infrastructure. Kubernetes became orchestration infrastructure. ROS became robotics infrastructure. SUPERFARM explores the same shape for agriculture.&quot;</div>
     </div>
   </section>
 
   <section id="now" aria-labelledby="now-title">
     <div class="section-inner">
-      <div class="super">The Lab — recent commits + what's next</div>
+      <div class="super">The Lab — recent commits + what&#39;s next</div>
       <h2 class="s-title" id="now-title">Now &amp; <em>Next.</em></h2>
       <div class="gitlog" role="img" aria-label="recent commits"><span class="cmd">$ git log --oneline -n 8 origin/main</span>
 <span class="hash">a4f1c2e</span>  <span class="msg">chore: add Google Search Console verification file</span>
@@ -1141,7 +1154,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
         </div>
         <div class="col">
           <h3>Next /</h3>
-          <p><span class="bright">[talk]</span> AI &amp; Cybersecurity Forum — Bogotá, May 2026 — <i>"Cybersecurity in the Golden Era of AI: agent models, emerging threats, and prompt injection attacks."</i></p>
+          <p><span class="bright">[talk]</span> AI &amp;amp; Cybersecurity Forum — Bogotá, May 2026 — <i>&quot;Cybersecurity in the Golden Era of AI: agent models, emerging threats, and prompt injection attacks.&quot;</i></p>
         </div>
       </div>
       <div class="past"><span class="tag">[talk · past]</span>Cybersecurity Forum — Bogotá, 2025 — Panelist on network security and infrastructure</div>
@@ -1155,7 +1168,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
       <div class="ls-block">total 2
 drwx------  1 lual  staff  <span class="dir">haycorte/</span>
 drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
-      <div class="epigraph">"Most experiments die. The ones that live earned it."</div>
+      <div class="epigraph">&quot;Most experiments die. The ones that live earned it.&quot;</div>
 
       <div class="entry">
         <div class="entry-head">
@@ -1165,12 +1178,12 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
         </div>
         <h4>What it was</h4>
         <p>WhatsApp-first infrastructure intelligence platform for utility outages (water / electricity / gas) in Bogotá. Bridged the gap between official utility info and how residents already share information in WhatsApp groups.</p>
-        <h4>Why it's strong</h4>
+        <h4>Why it&#39;s strong</h4>
         <p>Real communication problem; the gap is real.</p>
         <h4>Why it died</h4>
         <ul class="why">
           <li><b>Infrastructure dependence.</b> WhatsApp automation, utility scraping, geolocation, cloud APIs — none of it under your control. Continuous reliability required from day one because users only show up during stressful events; one scraper failure or blocked WA flow burns trust instantly.</li>
-          <li><b>Business-structure mismatch.</b> Behaves like a public-utility layer; monetizes like SaaS. Individuals won't pay for outage info. The strongest path (building admins / property mgmt) needs manual sales, onboarding, local ops.</li>
+          <li><b>Business-structure mismatch.</b> Behaves like a public-utility layer; monetizes like SaaS. Individuals won&#39;t pay for outage info. The strongest path (building admins / property mgmt) needs manual sales, onboarding, local ops.</li>
           <li><b>Episodic engagement.</b> Users only care during outages. Retention depends on scheduled maintenance alerts and community participation, which delays self-sustainability.</li>
           <li><b>Capital vs. operational burden.</b> Infrastructure-heavy with insufficient early revenue to justify the load. Without capital or a dedicated ops layer, it operates at a loss for too long.</li>
         </ul>
@@ -1187,11 +1200,11 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
         </div>
         <h4>What it was</h4>
         <p>An AI-assisted companion layer for OrcaSlicer and Klipper — analyzing slicer profiles, validating printer constraints, and recommending safer print settings for high-performance 3D printers.</p>
-        <h4>Why it's strong</h4>
+        <h4>Why it&#39;s strong</h4>
         <p>Real systems-engineering pain; tuning these printers is genuinely hard.</p>
         <h4>Why it died</h4>
         <ul class="why">
-          <li><b>Infra cost &gt; realistic revenue.</b> Reliable optimization needs large datasets of printer configs and failures, telemetry ingestion, hardware-specific tuning models, and continuous testing across many printer variants. Support burden disproportionate to likely revenue.</li>
+          <li><b>Infra cost &amp;gt; realistic revenue.</b> Reliable optimization needs large datasets of printer configs and failures, telemetry ingestion, hardware-specific tuning models, and continuous testing across many printer variants. Support burden disproportionate to likely revenue.</li>
           <li><b>Audience economics.</b> Target users (advanced hobbyists) are technically capable, price-sensitive, and resistant to subscriptions — hard acquisition and retention without a large community presence or distribution channel.</li>
           <li><b>Trust-fragile category.</b> Inconsistent recommendations or one failed print suggestion burns trust fast. High API and hosting costs while debugging edge cases make the early stage punishing.</li>
           <li><b>Strategic fit.</b> Better classed as a systems-engineering experiment than a product right now; infrastructure and validation requirements exceed probable short-term return. A loss-making launch is strategically unrealistic at this stage.</li>
@@ -1220,7 +1233,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
       <div class="super">Speaking — talks and panels</div>
       <h2 class="s-title" id="speaking-title">Speaking <em>proof.</em></h2>
       <div class="conn-rows">
-        <a href="https://lucholabs.dev/talks/ai-cybersecurity-2026" target="_blank" rel="noopener"><span class="k">2026</span><span class="arrow">→</span>AI &amp; Cybersecurity Forum · Bogotá · May 2026 · Panelist</a>
+        <a href="https://lucholabs.dev/talks/ai-cybersecurity-2026" target="_blank" rel="noopener"><span class="k">2026</span><span class="arrow">→</span>AI &amp;amp; Cybersecurity Forum · Bogotá · May 2026 · Panelist</a>
         <div><span class="k">2025</span><span class="arrow">→</span>Cybersecurity Forum · Bogotá · 2025 · Panelist</div>
       </div>
     </div>
@@ -1241,7 +1254,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
   <section id="connect" aria-labelledby="connect-title">
     <div class="section-inner">
       <div class="super">Connect — channels</div>
-      <h2 class="s-title" id="connect-title">Let's <em>Talk.</em></h2>
+      <h2 class="s-title" id="connect-title">Let&#39;s <em>Talk.</em></h2>
       <div class="conn-rows">
         <a href="https://github.com/lualducor" target="_blank" rel="noopener"><span class="k">git</span><span class="arrow">→</span>github.com/lualducor</a>
         <a href="https://www.linkedin.com/in/luis-alberto-duarte-cortes-97748171" target="_blank" rel="noopener"><span class="k">in</span><span class="arrow">→</span>linkedin.com/in/luis-alberto-duarte-cortes-97748171</a>
@@ -1345,22 +1358,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
   const prevBtn = document.getElementById('pbtn-prev');
   const nextBtn = document.getElementById('pbtn-next');
 
-  const SECTION_LABELS = {
-    hero: 'Hero',
-    manifesto: 'Manifesto',
-    thesis: 'Thesis',
-    stack: 'Stack',
-    projects: 'Projects',
-    bvd: 'Boveda',
-    phs: 'Phishing Shield',
-    sfm: 'Superfarm',
-    trust: 'Trust',
-    speaking: 'Speaking',
-    now: 'Now & Next',
-    archive: 'Archive',
-    subscribe: 'Subscribe',
-    connect: 'Connect'
-  };
+  const SECTION_LABELS = {"hero":"Hero","manifesto":"Manifesto","thesis":"Thesis","stack":"Stack","projects":"Projects","bvd":"Boveda","phs":"Phishing Shield","sfm":"Superfarm","trust":"Trust","speaking":"Speaking","now":"Now & Next","archive":"Archive","subscribe":"Subscribe","connect":"Connect"}, sectionLabels = SECTION_LABELS;
 
   let currentSectionId = 'hero';
   let currentIdx = 0;
@@ -1369,7 +1367,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     currentIdx = idx;
     const s = sections[idx];
     currentSectionId = s.id;
-    const label = SECTION_LABELS[s.id] || s.id;
+    const label = sectionLabels[s.id] || s.id;
     crumb.textContent = label;
     stampLabel.textContent = label;
     stampCurrent.textContent = String(idx + 1).padStart(2, '0');

@@ -1,0 +1,554 @@
+<%
+const project = it.project;
+const page = it.page;
+const isEs = it.locale === 'es';
+%>
+<!DOCTYPE html>
+<html lang="<%= it.locale %>" data-section="hero">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title><%= page.title %></title>
+<meta name="description" content="<%= page.description %>">
+<meta name="theme-color" content="#191919">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="<%= page.ogTitle %>">
+<meta property="og:description" content="<%= page.ogDescription %>">
+<meta property="og:url" content="<%= page.canonicalUrl %>">
+<meta property="og:image" content="https://lucholabs.dev/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= page.ogTitle %>">
+<meta name="twitter:description" content="<%= page.ogDescription %>">
+<meta name="twitter:image" content="https://lucholabs.dev/og-image.jpg">
+
+<link rel="canonical" href="<%= page.canonicalUrl %>">
+<link rel="icon" type="image/svg+xml" href="https://lucholabs.dev/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="https://lucholabs.dev/favicon-32.png">
+<link rel="apple-touch-icon" href="https://lucholabs.dev/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Pixelify+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root {
+  --bg: #191919;
+  --bg-2: #0f0f0f;
+  --fg: #fffaee;
+  --fg-2: #ddd6c8;
+  --fg-mute: #b8b1a1;
+  --fg-faint: #7e7a72;
+  --line: #fffaee;
+  --line-faint: rgba(255, 250, 238, 0.18);
+  --accent: #00FF41;
+  --accent-rgb: 0, 255, 65;
+  --accent-warm: #88B488;
+  --status-progress: #00FF41;
+  --status-prototype: #facc15;
+  --status-research: #60a5fa;
+  --killed: #ff6b4a;
+  --chrome-h-top: 76px;
+  --chrome-h-bot: 64px;
+  --chrome-h: var(--chrome-h-top);
+  --f-display: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-text: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-pixel: "Pixelify Sans", ui-monospace, monospace;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+  --t-fast: 180ms cubic-bezier(.2,.7,.2,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-text);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--accent); color: var(--bg); }
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-ascii {
+  background: url("https://lucholabs.dev/lab/assets/ascii-texture.png") center / 1761px 1761px no-repeat;
+  background-position: center -200px;
+  opacity: 0.1;
+  mix-blend-mode: lighten;
+}
+.bg-halftone {
+  background-image: radial-gradient(circle at center, rgba(255, 250, 238, 0.06) 1px, transparent 1.4px);
+  background-size: 8px 8px;
+  mix-blend-mode: overlay;
+  opacity: 0.45;
+}
+.bg-grain {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+
+.chrome {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  background: linear-gradient(to bottom, rgba(25,25,25,0.92), rgba(25,25,25,0.65));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  user-select: none;
+}
+.chrome--top {
+  top: 0;
+  height: var(--chrome-h-top);
+  border-bottom: 1px solid var(--line-faint);
+}
+.chrome--bot {
+  bottom: 0;
+  min-height: var(--chrome-h-bot);
+  border-top: 1px solid var(--line-faint);
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.crumb-wrap {
+  font-family: var(--f-text);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  display: inline-flex;
+  align-items: center;
+}
+.crumb-wrap .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 999px;
+  margin-right: 14px;
+  vertical-align: 1px;
+}
+.crumb-link:hover,
+.crumb-link:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+
+.chrome-links {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cv-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  padding: 10px 18px;
+  border: 1px solid var(--line-faint);
+  border-radius: 999px;
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+.cv-link:hover,
+.cv-link:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.05);
+  outline: none;
+}
+
+.locale-toggle {
+  font-weight: 600;
+}
+
+.es-placeholder {
+  position: sticky;
+  top: var(--chrome-h, 40px);
+  width: 100%;
+  text-align: center;
+  color: var(--fg-faint);
+  font-size: 12.5px;
+  padding: 6px 12px;
+  background: rgba(255,250,238,0.04);
+  border-bottom: 1px solid var(--line-faint);
+  z-index: 5;
+  font-family: var(--f-mono);
+  box-sizing: border-box;
+}
+
+.page-body {
+  position: relative;
+  z-index: 5;
+  padding: calc(var(--chrome-h-top) + 40px) 0 calc(var(--chrome-h-bot) + 48px);
+}
+
+.page-shell {
+  width: min(1180px, calc(100% - 64px));
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  gap: 18px;
+  padding: 36px 0 24px;
+  border-bottom: 1px solid var(--line-faint);
+}
+
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hero-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.project-name {
+  font-family: var(--f-pixel);
+  font-size: clamp(56px, 9vw, 108px);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.status-badge[data-status="progress"] { color: var(--status-progress); }
+.status-badge[data-status="prototype"] { color: var(--status-prototype); }
+.status-badge[data-status="research"] { color: var(--status-research); }
+.status-badge[data-status="killed"] { color: var(--killed); }
+
+.subtitle {
+  max-width: 48rem;
+  font-size: clamp(20px, 2.7vw, 30px);
+  line-height: 1.15;
+  color: var(--fg);
+}
+
+.stack-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.stack-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 6px 10px;
+  border: 1px solid var(--line-faint);
+  border-radius: 999px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(260px, 0.95fr);
+  gap: 28px;
+  padding-top: 30px;
+}
+
+.story,
+.panel {
+  background: rgba(255, 250, 238, 0.025);
+  border: 1px solid rgba(255, 250, 238, 0.08);
+  border-radius: 28px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.story {
+  padding: 30px;
+  display: grid;
+  gap: 18px;
+}
+
+.story h2,
+.panel h2 {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.story p {
+  max-width: 72ch;
+  color: var(--fg-2);
+}
+
+.quote {
+  padding-left: 16px;
+  border-left: 2px solid rgba(var(--accent-rgb), 0.45);
+  color: var(--fg);
+  font-size: 17px;
+}
+
+.signals {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.signals li {
+  color: var(--fg-2);
+}
+
+.rail {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.panel {
+  padding: 24px;
+  display: grid;
+  gap: 14px;
+}
+
+.panel-kicker {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.panel-copy {
+  color: var(--fg-2);
+}
+
+.panel-copy.faint {
+  color: var(--fg-mute);
+  font-size: 14px;
+}
+
+.panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-faint);
+  font-family: var(--f-display);
+  font-size: 18px;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.panel-link:hover,
+.panel-link:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.link-list {
+  display: grid;
+  gap: 12px;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-links a {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  transition: color var(--t-fast);
+}
+.footer-links a:hover,
+.footer-links a:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+
+.stamp {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.stamp .stamp-sep { margin: 0 12px; opacity: 0.6; }
+#stamp-current { color: var(--accent); }
+
+@media (max-width: 920px) {
+  .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+  .chrome { padding: 0 22px; }
+  .page-shell { width: min(100% - 28px, 1180px); }
+  .page-body { padding-bottom: calc(var(--chrome-h-bot) + 88px); }
+  .hero-head { flex-direction: column; }
+  .chrome-links { gap: 8px; }
+  .cv-link { font-size: 11px; padding: 8px 12px; }
+  .crumb-wrap { font-size: 15px; }
+  .story, .panel { border-radius: 22px; padding: 22px; }
+  .stamp { font-size: 10px; }
+  .chrome--bot {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .es-placeholder { font-size: 11px; }
+}
+</style>
+<script type="application/ld+json"><%~ page.jsonLd %></script>
+<script defer data-domain="lucholabs.dev" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<div class="bg-layer bg-ascii" aria-hidden="true"></div>
+<div class="bg-layer bg-halftone" aria-hidden="true"></div>
+<div class="bg-layer bg-grain" aria-hidden="true"></div>
+
+<header class="chrome chrome--top" role="banner">
+  <a class="crumb-wrap crumb-link" href="<%= page.backUrl %>" aria-label="<%= it.t({ en: 'Back to THELAB index', es: 'Volver al índice de THELAB' }, it.locale) %>">
+    <span class="dot"></span><span><%= it.t({ en: '← Back to /lab', es: '← Volver a /lab' }, it.locale) %></span>
+  </a>
+  <span class="chrome-links">
+    <% if (it.locale === 'es') { %>
+    <a class="locale-toggle cv-link" href="<%= it.page.localeSwapUrl %>" aria-label="Switch to English">EN</a>
+    <% } else { %>
+    <a class="locale-toggle cv-link" href="<%= it.page.localeSwapUrl %>" aria-label="Cambiar a Español">ES</a>
+    <% } %>
+    <a class="cv-link" href="<%= page.blogUrl %>" aria-label="<%= it.t({ en: 'Read the blog at', es: 'Lee el blog en' }, it.locale) %> <%= page.blogUrl.replace('https://', '') %>"><%= it.t({ en: 'Blog ↗', es: 'Blog ↗' }, it.locale) %></a>
+    <a class="cv-link" href="<%= page.cvUrl %>" aria-label="<%= it.t({ en: 'View CV at', es: 'Ver CV en' }, it.locale) %> <%= page.cvUrl.replace('https://', '') %>"><%= it.t({ en: 'View CV ↗', es: 'Ver CV ↗' }, it.locale) %></a>
+  </span>
+</header>
+
+<main class="page-body">
+  <div class="page-shell">
+    <section class="hero" aria-labelledby="project-title">
+      <p class="eyebrow"><%= page.code %> · <%= it.t({ en: 'Project', es: 'Proyecto' }, it.locale) %></p>
+      <div class="hero-head">
+        <h1 class="project-name" id="project-title"><%= project.name %></h1>
+        <span class="status-badge" data-status="<%= page.statusKey %>"><%= it.t(page.statusBadge, it.locale) %></span>
+      </div>
+      <p class="subtitle"><%= it.t(page.subtitle, it.locale) %></p>
+      <div class="stack-row" aria-label="<%= it.t({ en: 'Project stack', es: 'Stack del proyecto' }, it.locale) %>">
+        <% project.stack.forEach(function(tag) { %>
+        <span class="stack-pill"><%= tag %></span>
+        <% }) %>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <article class="story" aria-labelledby="context-title">
+        <h2 id="context-title"><%= it.t({ en: 'Context', es: 'Contexto' }, it.locale) %></h2>
+        <% if (page.quote) { %>
+        <p class="quote"><%= it.t(page.quote, it.locale) %></p>
+        <% } %>
+        <% page.paragraphs.forEach(function(paragraph) { %>
+        <p><%= paragraph %></p>
+        <% }) %>
+        <% if (page.bullets.length) { %>
+        <h2><%= it.t({ en: 'Signals', es: 'Señales' }, it.locale) %></h2>
+        <ul class="signals">
+          <% page.bullets.forEach(function(item) { %>
+          <li><%= it.t(item, it.locale) %></li>
+          <% }) %>
+        </ul>
+        <% } %>
+        <% if (page.note) { %>
+        <p class="panel-copy faint"><%= it.t(page.note, it.locale) %></p>
+        <% } %>
+      </article>
+
+      <aside class="rail">
+        <section class="panel" aria-labelledby="related-title">
+          <h2 id="related-title"><%= it.t({ en: 'Related on the CV', es: 'Relacionado en el CV' }, it.locale) %></h2>
+          <p class="panel-kicker"><%= page.relatedKicker %></p>
+          <a class="panel-link" href="<%= page.relatedHref %>"><%= page.relatedLabel %></a>
+        </section>
+
+        <% if (page.externalLinks.length) { %>
+        <section class="panel" aria-labelledby="links-title">
+          <h2 id="links-title"><%= it.t({ en: 'External Links', es: 'Enlaces externos' }, it.locale) %></h2>
+          <div class="link-list">
+            <% page.externalLinks.forEach(function(link) { %>
+            <a class="panel-link" href="<%= link.href %>"><%= link.label %></a>
+            <% }) %>
+          </div>
+        </section>
+        <% } %>
+
+        <section class="panel" aria-labelledby="status-title">
+          <h2 id="status-title"><%= it.t({ en: 'Status', es: 'Estado' }, it.locale) %></h2>
+          <p class="panel-copy"><%= it.t(project.status, it.locale) %></p>
+          <p class="panel-copy faint"><%= it.t(project.description, it.locale) %></p>
+        </section>
+      </aside>
+    </section>
+  </div>
+</main>
+
+<footer class="chrome chrome--bot" role="contentinfo">
+  <div class="stamp">
+    <span id="stamp-current"><%= page.code %></span><span class="stamp-sep">/</span><span><%= it.t(page.statusBadge, it.locale) %></span><span class="stamp-sep">—</span><span><%= project.name %></span>
+  </div>
+  <div class="footer-links">
+    <a href="<%= page.backUrl %>"><%= it.t({ en: 'Back to /lab', es: 'Volver a /lab' }, it.locale) %></a>
+    <a href="<%= page.cvUrl %>"><%= it.t({ en: 'View CV', es: 'Ver CV' }, it.locale) %></a>
+  </div>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="es" data-section="hero">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Archivo — lucholabs.dev/lab</title>
+<meta name="description" content="Postmortems de experimentos archivados de lucholabs.">
+<meta name="theme-color" content="#191919">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="Archivo — lucholabs.dev/lab">
+<meta property="og:description" content="Postmortems de experimentos archivados de lucholabs.">
+<meta property="og:url" content="https://lucholabs.dev/es/lab/archive">
+<meta property="og:image" content="https://lucholabs.dev/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Archivo — lucholabs.dev/lab">
+<meta name="twitter:description" content="Postmortems de experimentos archivados de lucholabs.">
+<meta name="twitter:image" content="https://lucholabs.dev/og-image.jpg">
+
+<link rel="canonical" href="https://lucholabs.dev/es/lab/archive">
+<link rel="icon" type="image/svg+xml" href="https://lucholabs.dev/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="https://lucholabs.dev/favicon-32.png">
+<link rel="apple-touch-icon" href="https://lucholabs.dev/apple-touch-icon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Pixelify+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap">
+
+<style>
+:root {
+  --bg: #191919;
+  --bg-2: #0f0f0f;
+  --fg: #fffaee;
+  --fg-2: #ddd6c8;
+  --fg-mute: #b8b1a1;
+  --fg-faint: #7e7a72;
+  --line-faint: rgba(255, 250, 238, 0.18);
+  --accent: #00FF41;
+  --accent-rgb: 0, 255, 65;
+  --status-progress: #00FF41;
+  --status-prototype: #facc15;
+  --status-research: #60a5fa;
+  --killed: #ff6b4a;
+  --chrome-h-top: 76px;
+  --chrome-h-bot: 64px;
+  --chrome-h: var(--chrome-h-top);
+  --f-display: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-text: "Inter", "Helvetica Neue", Arial, sans-serif;
+  --f-pixel: "Pixelify Sans", ui-monospace, monospace;
+  --f-mono: "JetBrains Mono", ui-monospace, monospace;
+  --t-fast: 180ms cubic-bezier(.2,.7,.2,1);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--f-text);
+  font-size: 16px;
+  line-height: 1.5;
+  letter-spacing: -0.005em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  position: relative;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+a { color: inherit; text-decoration: none; }
+
+::selection { background: var(--accent); color: var(--bg); }
+
+.bg-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.bg-ascii {
+  background: url("https://lucholabs.dev/lab/assets/ascii-texture.png") center / 1761px 1761px no-repeat;
+  background-position: center -200px;
+  opacity: 0.1;
+  mix-blend-mode: lighten;
+}
+.bg-halftone {
+  background-image: radial-gradient(circle at center, rgba(255, 250, 238, 0.06) 1px, transparent 1.4px);
+  background-size: 8px 8px;
+  mix-blend-mode: overlay;
+  opacity: 0.45;
+}
+.bg-grain {
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+}
+
+.chrome {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  padding: 0 40px;
+  background: linear-gradient(to bottom, rgba(25,25,25,0.92), rgba(25,25,25,0.65));
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  user-select: none;
+}
+.chrome--top {
+  top: 0;
+  height: var(--chrome-h-top);
+  border-bottom: 1px solid var(--line-faint);
+}
+.chrome--bot {
+  bottom: 0;
+  min-height: var(--chrome-h-bot);
+  border-top: 1px solid var(--line-faint);
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.crumb-wrap {
+  font-family: var(--f-text);
+  font-weight: 500;
+  font-size: 18px;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  display: inline-flex;
+  align-items: center;
+}
+.crumb-wrap .dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 999px;
+  margin-right: 14px;
+  vertical-align: 1px;
+}
+.crumb-link:hover,
+.crumb-link:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+
+.chrome-links {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cv-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  padding: 10px 18px;
+  border: 1px solid var(--line-faint);
+  border-radius: 999px;
+  transition: color var(--t-fast), border-color var(--t-fast), background var(--t-fast);
+}
+.cv-link:hover,
+.cv-link:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: rgba(var(--accent-rgb), 0.05);
+  outline: none;
+}
+
+.locale-toggle {
+  font-weight: 600;
+}
+
+.es-placeholder {
+  position: sticky;
+  top: var(--chrome-h, 40px);
+  width: 100%;
+  text-align: center;
+  color: var(--fg-faint);
+  font-size: 12.5px;
+  padding: 6px 12px;
+  background: rgba(255,250,238,0.04);
+  border-bottom: 1px solid var(--line-faint);
+  z-index: 5;
+  font-family: var(--f-mono);
+  box-sizing: border-box;
+}
+
+.page-body {
+  position: relative;
+  z-index: 5;
+  padding: calc(var(--chrome-h-top) + 40px) 0 calc(var(--chrome-h-bot) + 48px);
+}
+
+.page-shell {
+  width: min(1180px, calc(100% - 64px));
+  margin: 0 auto;
+}
+
+.hero {
+  display: grid;
+  gap: 18px;
+  padding: 36px 0 24px;
+  border-bottom: 1px solid var(--line-faint);
+}
+
+.eyebrow {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.hero-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.page-title {
+  font-family: var(--f-pixel);
+  font-size: clamp(56px, 9vw, 108px);
+  line-height: 0.94;
+  letter-spacing: -0.03em;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  border: 1px solid currentColor;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--killed);
+  white-space: nowrap;
+}
+
+.subtitle {
+  max-width: 52rem;
+  font-size: clamp(20px, 2.7vw, 30px);
+  line-height: 1.15;
+  color: var(--fg);
+}
+
+.content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.9fr) minmax(260px, 0.95fr);
+  gap: 28px;
+  padding-top: 30px;
+}
+
+.archive-list {
+  display: grid;
+  gap: 20px;
+}
+
+.archive-entry,
+.panel {
+  background: rgba(255, 250, 238, 0.025);
+  border: 1px solid rgba(255, 250, 238, 0.08);
+  border-radius: 28px;
+  padding: 28px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+.archive-entry {
+  display: grid;
+  gap: 16px;
+  scroll-margin-top: 120px;
+}
+
+.entry-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.entry-title {
+  font-size: clamp(28px, 4vw, 44px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+}
+
+.entry-subtitle {
+  font-size: 20px;
+  color: var(--fg);
+}
+
+.entry-copy,
+.entry-note,
+.panel-copy {
+  color: var(--fg-2);
+}
+
+.entry-quote {
+  padding-left: 16px;
+  border-left: 2px solid rgba(var(--accent-rgb), 0.45);
+  color: var(--fg);
+  font-size: 17px;
+}
+
+.signals {
+  display: grid;
+  gap: 10px;
+  padding-left: 18px;
+}
+
+.signals li {
+  color: var(--fg-2);
+}
+
+.rail {
+  display: grid;
+  gap: 18px;
+  align-content: start;
+}
+
+.panel {
+  display: grid;
+  gap: 14px;
+}
+
+.panel h2 {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.panel-kicker {
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+
+.panel-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--line-faint);
+  font-family: var(--f-display);
+  font-size: 18px;
+  transition: color var(--t-fast), border-color var(--t-fast);
+}
+.panel-link:hover,
+.panel-link:focus-visible {
+  color: var(--accent);
+  border-color: var(--accent);
+  outline: none;
+}
+
+.footer-links {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footer-links a {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-mute);
+  transition: color var(--t-fast);
+}
+.footer-links a:hover,
+.footer-links a:focus-visible {
+  color: var(--accent);
+  outline: none;
+}
+
+.stamp {
+  font-family: var(--f-mono);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--fg-faint);
+}
+.stamp .stamp-sep { margin: 0 12px; opacity: 0.6; }
+#stamp-current { color: var(--accent); }
+
+@media (max-width: 920px) {
+  .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 680px) {
+  .chrome { padding: 0 22px; }
+  .page-shell { width: min(100% - 28px, 1180px); }
+  .page-body { padding-bottom: calc(var(--chrome-h-bot) + 88px); }
+  .hero-head { flex-direction: column; }
+  .chrome-links { gap: 8px; }
+  .cv-link { font-size: 11px; padding: 8px 12px; }
+  .crumb-wrap { font-size: 15px; }
+  .archive-entry, .panel { border-radius: 22px; padding: 22px; }
+  .stamp { font-size: 10px; }
+  .chrome--bot {
+    flex-direction: column;
+    align-items: flex-start;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .footer-links {
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .es-placeholder { font-size: 11px; }
+}
+</style>
+<script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "@id": "https://lucholabs.dev/es/lab/archive",
+  "url": "https://lucholabs.dev/es/lab/archive",
+  "name": "Archive — THELAB",
+  "description": "Postmortems for archived experiments from lucholabs.",
+  "isPartOf": {
+    "@id": "https://lucholabs.dev/es/lab"
+  },
+  "inLanguage": "es"
+}</script>
+<script defer data-domain="lucholabs.dev" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<div class="bg-layer bg-ascii" aria-hidden="true"></div>
+<div class="bg-layer bg-halftone" aria-hidden="true"></div>
+<div class="bg-layer bg-grain" aria-hidden="true"></div>
+
+<header class="chrome chrome--top" role="banner">
+  <a class="crumb-wrap crumb-link" href="https://lucholabs.dev/es/lab" aria-label="Volver al índice de THELAB">
+    <span class="dot"></span><span>&amp;larr; Volver a /lab</span>
+  </a>
+  <span class="chrome-links">
+        <a class="locale-toggle cv-link" href="https://lucholabs.dev/lab/archive" aria-label="Switch to English">EN</a>
+        <a class="cv-link" href="https://lucholabs.dev/es/blog" aria-label="Lee el blog en lucholabs.dev/es/blog">Blog ↗</a>
+    <a class="cv-link" href="https://lucholabs.dev/es/" aria-label="Ver CV en lucholabs.dev/es/">Ver CV ↗</a>
+  </span>
+</header>
+
+<main class="page-body">
+  <div class="page-shell">
+    <section class="hero" aria-labelledby="archive-title">
+      <p class="eyebrow">ARC · 09 · Archive</p>
+      <div class="hero-head">
+        <h1 class="page-title" id="archive-title">Archivo.</h1>
+        <span class="status-badge">muerto</span>
+      </div>
+      <p class="subtitle">Postmortems de haycorte y klipper-copilot, visibles porque la razón estructural por la que muere un producto importa tanto como el prototipo.</p>
+    </section>
+
+    <section class="content-grid">
+      <div class="archive-list" aria-label="Archived project entries">
+                <article class="archive-entry" id="haycorte" aria-labelledby="haycorte-title">
+          <div class="entry-head">
+            <span class="status-badge">muerto</span>
+            <p class="eyebrow">haycorte</p>
+          </div>
+          <h2 class="entry-title" id="haycorte-title">haycorte</h2>
+          <p class="entry-subtitle">Inteligencia sobre interrupciones urbanas para cortes de servicios en Bogotá.</p>
+                    <p class="entry-quote">Problema de comunicación real; la brecha existe. La forma de negocio no.</p>
+                    <p class="entry-copy">Inteligencia de infraestructura WhatsApp-first para cortes de servicios (agua/luz/gas) en Bogotá. Problema de comunicación real; la brecha existe. El problema de distribución lo mató: lograr que los usuarios instalen un bot de WhatsApp antes de necesitarlo — no después de quedarse sin agua — exige marketing sostenido que no se justificaba con el alcance del proyecto. Archivado como un hallazgo validado, no como un fallo de ejecución.</p>
+          <p class="entry-copy">Haycorte era un servicio WhatsApp-first que mostraba en tiempo real datos de cortes de agua, luz y gas para barrios de Bogotá scrapeando los cronogramas oficiales. Construido para cerrar una brecha de comunicación real. Muerto tras validar que el problema de distribución — lograr que los usuarios instalaran un bot de WhatsApp antes de necesitarlo, no después de quedarse sin agua — exigía una inversión en marketing inconsistente con el alcance del proyecto. La infraestructura funcionaba; la forma de negocio no.</p>
+                    <ul class="signals">
+                        <li>Dependencia de infraestructura</li>
+                        <li>Estructura de negocio incompatible</li>
+                        <li>Uso episódico</li>
+                        <li>Capital vs. carga operativa</li>
+                      </ul>
+                              <p class="entry-note">estratégicamente interesante como futura capa de datos de servicios. por ahora: archivado.</p>
+                  </article>
+                <article class="archive-entry" id="klipper-copilot" aria-labelledby="klipper-copilot-title">
+          <div class="entry-head">
+            <span class="status-badge">muerto</span>
+            <p class="eyebrow">klipper-copilot</p>
+          </div>
+          <h2 class="entry-title" id="klipper-copilot-title">klipper-copilot</h2>
+          <p class="entry-subtitle">Copilot de IA para impresión 3D sobre firmware Klipper.</p>
+                    <p class="entry-quote">Optimizar impresiones 3D es un nicho lo suficientemente pequeño como para que mantener el copilot cueste más que las impresoras a las que ayuda.</p>
+                    <p class="entry-copy">Capa de optimización asistida por IA para workflows de impresión 3D sobre máquinas Klipper. Muerto tras descubrir que los usuarios avanzados de Klipper ya tenían workflows manuales de tuning fuertes y se resistían activamente a entregarlos. El nicho era real pero la relación de la audiencia con ese nicho hacía sentir la automatización como una pérdida de control, no como una ganancia. Archivado como lección de encaje audiencia-problema.</p>
+          <p class="entry-copy">Klipper Copilot era una capa de optimización asistida por IA para workflows de impresión 3D sobre impresoras Klipper, automatizando sugerencias de calibración y ajuste de parámetros del slicer. Muerto tras descubrir que la población objetivo — entusiastas avanzados de la impresión 3D — ya había desarrollado workflows manuales fuertes y se resistía activamente a automatizar el proceso de tuning. El problema existía; la disposición a delegarlo no.</p>
+                    <ul class="signals">
+                        <li>Audiencia de nicho</li>
+                        <li>Carga de mantenimiento</li>
+                        <li>Fragmentación de hardware</li>
+                        <li>Disposición a pagar limitada</li>
+                      </ul>
+                              <p class="entry-note">archivado como proyecto de aprendizaje. potencial revival futuro si el ecosistema de impresión 3D se consolida.</p>
+                  </article>
+              </div>
+
+      <aside class="rail">
+        <section class="panel" aria-labelledby="related-title">
+          <h2 id="related-title">Relacionado en el CV</h2>
+          <p class="panel-kicker">Puntero al archivo del CV</p>
+          <a class="panel-link" href="https://lucholabs.dev/es/#projects">Sección de proyectos</a>
+        </section>
+
+        <section class="panel" aria-labelledby="why-title">
+          <h2 id="why-title">Por qué mantener esta página</h2>
+          <p class="panel-copy">The Lab mantiene visibles los experimentos muertos porque distribución, confianza y costo operativo también son parte de la arquitectura.</p>
+        </section>
+      </aside>
+    </section>
+  </div>
+</main>
+
+<footer class="chrome chrome--bot" role="contentinfo">
+  <div class="stamp">
+    <span id="stamp-current">ARC · 09</span><span class="stamp-sep">/</span><span>muerto</span><span class="stamp-sep">—</span><span>Archivo</span>
+  </div>
+  <div class="footer-links">
+    <a href="https://lucholabs.dev/es/lab">Volver a /lab</a>
+    <a href="https://lucholabs.dev/es/">Ver CV</a>
+  </div>
+</footer>
+
+</body>
+</html>

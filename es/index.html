@@ -1,22 +1,22 @@
 <!DOCTYPE html>
-<html lang="en" data-section="hero">
+<html lang="es" data-section="hero">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>lucholabs.dev/lab — Luis Alberto Duarte Cortés — AI Systems & Automation Engineer</title>
-<meta name="description" content="The /lab: live projects, manifesto, and archive of dead experiments. Built in Bogotá by an AI systems and automation engineer.">
+<meta name="description" content="El /lab: proyectos vivos, manifiesto y archivo de experimentos muertos. Construido en Bogotá por un ingeniero de sistemas y automatización con IA.">
 <meta name="theme-color" content="#191919">
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="lucholabs.dev/lab — Luis Alberto Duarte Cortés">
-<meta property="og:description" content="The /lab: live projects, manifesto, and archive of dead experiments.">
+<meta property="og:description" content="El /lab: proyectos vivos, manifiesto y archivo de experimentos muertos.">
 <meta property="og:url" content="https://lucholabs.dev/lab">
 <meta property="og:image" content="https://lucholabs.dev/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="lucholabs.dev/lab">
-<meta name="twitter:description" content="The /lab: live projects, manifesto, and archive of dead experiments.">
+<meta name="twitter:description" content="El /lab: proyectos vivos, manifiesto y archivo de experimentos muertos.">
 <meta name="twitter:image" content="https://lucholabs.dev/og-image.jpg">
 
 <link rel="canonical" href="https://lucholabs.dev/lab">
@@ -51,6 +51,7 @@
 
   --chrome-h-top: 76px;
   --chrome-h-bot: 64px;
+  --chrome-h: var(--chrome-h-top);
 
   --f-display: "Inter", "Helvetica Neue", Arial, sans-serif;
   --f-text: "Inter", "Helvetica Neue", Arial, sans-serif;
@@ -154,8 +155,14 @@ a { color: inherit; text-decoration: none; }
   text-transform: capitalize;
 }
 
-.cv-link {
+.chrome-links {
   margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.cv-link {
   font-family: var(--f-mono);
   font-size: 13px;
   letter-spacing: 0.16em;
@@ -171,6 +178,10 @@ a { color: inherit; text-decoration: none; }
   border-color: var(--accent);
   background: rgba(var(--accent-rgb), 0.05);
   outline: none;
+}
+
+.locale-toggle {
+  font-weight: 600;
 }
 
 /* Footer stamp + pager */
@@ -896,6 +907,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   .chrome { padding: 0 22px; }
   section { padding: calc(var(--chrome-h-top) + 28px) 5vw calc(var(--chrome-h-bot) + 28px); }
   .crumb-wrap { font-size: 15px; }
+  .chrome-links { gap: 8px; }
   .cv-link { font-size: 11px; padding: 8px 13px; }
   .pager .pbtn { width: 32px; height: 32px; }
   .stamp { font-size: 10.5px; }
@@ -917,7 +929,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   "@id": "https://lucholabs.dev/es/lab",
   "url": "https://lucholabs.dev/es/lab",
   "name": "Lab — Luis Alberto Duarte Cortés",
-  "description": "How I think about systems, AI, and infrastructure. Manifesto, project deep dives, and dead experiments from lucholabs.",
+  "description": "Cómo pienso sobre sistemas, IA e infraestructura. Manifiesto, proyectos en profundidad y experimentos muertos de lucholabs.",
   "isPartOf": { "@id": "https://lucholabs.dev/#website" },
   "about": { "@id": "https://lucholabs.dev/#person" },
   "primaryImageOfPage": { "@id": "https://lucholabs.dev/#person" },
@@ -935,8 +947,9 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 <header class="chrome chrome--top" role="banner">
   <span class="crumb-wrap"><span class="dot"></span><span id="crumb">Hero</span></span>
   <span class="chrome-links">
-    <a class="cv-link" href="https://lucholabs.dev/blog" target="_blank" rel="noopener" aria-label="Read the blog at lucholabs.dev/blog (opens in new tab)">Blog ↗</a>
-    <a class="cv-link" href="https://lucholabs.dev" target="_blank" rel="noopener" aria-label="View CV at lucholabs.dev (opens in new tab)">View CV ↗</a>
+        <a class="locale-toggle cv-link" href="https://lucholabs.dev/lab" aria-label="Switch to English">EN</a>
+        <a class="cv-link" href="https://lucholabs.dev/es/blog" aria-label="Read the blog at lucholabs.dev/es/blog">Blog ↗</a>
+    <a class="cv-link" href="https://lucholabs.dev/es/" aria-label="View CV at lucholabs.dev/es/">View CV ↗</a>
   </span>
 </header>
 
@@ -946,35 +959,35 @@ section.in-view .section-inner { opacity: 1; transform: none; }
     <div class="section-inner">
       <div class="hero-stamp">— LuchoLabs.dev · The Lab · v1.0</div>
       <div class="wordmark" id="hero-title">lucholabs<em>.dev/lab</em></div>
-      <div class="tagline">I build AI-powered systems and <em style="font-style:normal;color:var(--accent);">automation infrastructure.</em></div>
+      <div class="tagline">Construyo sistemas con IA e <em style="font-style:normal;color:var(--accent);">infraestructura de automatización.</em></div>
       <div class="typer-line">
-        <span class="label">let's talk about:</span> <span id="typed"></span><span class="caret idle" id="typer-caret" aria-hidden="true"></span>
+        <span class="label">hablemos de:</span> <span id="typed"></span><span class="caret idle" id="typer-caret" aria-hidden="true"></span>
       </div>
-      <div class="sub">Bogotá · Remote · C1 English (IELTS Academic 7.0)</div>
+      <div class="sub">Bogotá · Remoto · Inglés C1 (IELTS Academic 7.0)</div>
     </div>
-    <div class="scroll-cue" aria-hidden="true">↓ scroll</div>
+    <div class="scroll-cue" aria-hidden="true">↓ desplaza</div>
   </section>
 
   <section id="manifesto" aria-labelledby="manifesto-title">
     <div class="section-inner">
-      <div class="super">Manifesto — what runs through every project</div>
-      <h2 class="s-title" id="manifesto-title">How I <em>Build.</em></h2>
+      <div class="super">Manifiesto — lo que atraviesa cada proyecto</div>
+      <h2 class="s-title" id="manifesto-title">Cómo <em>Construyo.</em></h2>
       <div class="blocks">
         <div class="block">
-          <div class="block-h"><span class="n">01.</span>Systems Thinking</div>
-          <div class="block-body">Real automation isn't writing scripts. It's finding the seam where a workflow leaks — friction between APIs, hidden manual steps, missing observability — and rebuilding it. The open-source live-captioning system in my thesis didn't optimize a model; it closed a tooling gap that locked hearing-impaired students out of lectures. The same lens runs through every project here.</div>
+          <div class="block-h"><span class="n">01.</span>Pensamiento Sistémico</div>
+          <div class="block-body">La automatización real no es escribir scripts. Es encontrar la grieta por donde un flujo de trabajo se fuga — fricción entre APIs, pasos manuales escondidos, observabilidad faltante — y reconstruirlo. El sistema open-source de subtitulado en vivo de mi tesis no optimizó un modelo; cerró una brecha de tooling que dejaba a estudiantes con discapacidad auditiva fuera de las clases. La misma mirada atraviesa cada proyecto aquí.</div>
         </div>
         <div class="block">
-          <div class="block-h"><span class="n">02.</span>AI as Infrastructure</div>
-          <div class="block-body">LLMs aren't the product; they're a runtime. The Product Review Classifier runs Groq's llama-3.1-8b-instant behind n8n as a workflow primitive — like Postgres or Redis, but for natural language. The interesting work is wiring AI into systems where it has to be reliable, not where it has to be impressive.</div>
+          <div class="block-h"><span class="n">02.</span>IA como Infraestructura</div>
+          <div class="block-body">Los LLMs no son el producto; son un runtime. El Product Review Classifier corre llama-3.1-8b-instant de Groq detrás de n8n como una primitiva de workflow — como Postgres o Redis, pero para lenguaje natural. El trabajo interesante es cablear IA dentro de sistemas donde tiene que ser confiable, no donde tiene que ser impresionante.</div>
         </div>
         <div class="block">
-          <div class="block-h"><span class="n">03.</span>Cross-Domain Vision</div>
-          <div class="block-body">Accessibility tooling adopted by two Colombian institutions. A WhatsApp-first utility-disruption layer for Bogotá. Local-first finance over Colombian bank exports. Phishing protection tuned for elderly users. The shape isn't a vertical; it's a refusal to over-specialize when the plumbing is missing everywhere.</div>
+          <div class="block-h"><span class="n">03.</span>Visión Multidominio</div>
+          <div class="block-body">Herramientas de accesibilidad adoptadas por dos instituciones colombianas. Una capa WhatsApp-first sobre interrupciones de servicios públicos en Bogotá. Finanzas local-first sobre exportes de bancos colombianos. Protección anti-phishing afinada para adultos mayores. La forma no es una vertical; es una negativa a sobre-especializarse cuando la plomería falta en todas partes.</div>
         </div>
         <div class="block">
-          <div class="block-h"><span class="n">04.</span>Builder-Lab Identity</div>
-          <div class="block-body">/lab is what it says. Some experiments are live (Boveda, Phishing Shield). Some shipped and quiet (Product Review Classifier). Some are archived because the math didn't work (HayCorte, Klipper Copilot — postmortems below). The credibility isn't a hit rate; it's the willingness to write the postmortem.</div>
+          <div class="block-h"><span class="n">04.</span>Identidad Builder-Lab</div>
+          <div class="block-body">/lab es lo que dice. Algunos experimentos están vivos (Boveda, Phishing Shield). Algunos enviados y silenciosos (Product Review Classifier). Algunos están archivados porque las cuentas no daban (HayCorte, Klipper Copilot — postmortems abajo). La credibilidad no es una tasa de aciertos; es la disposición a escribir el postmortem.</div>
         </div>
       </div>
     </div>
@@ -982,26 +995,26 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 
   <section id="thesis" aria-labelledby="thesis-title">
     <div class="section-inner">
-      <div class="super">Thesis — the project that taught me cross-domain plumbing</div>
-      <h2 class="s-title" id="thesis-title">Captioning <em>Lectures.</em></h2>
-      <div class="thesis-title">Open-Source Live Captioning System for Hearing-Impaired Students</div>
-      <div class="thesis-sub">Thesis work 2022–2023 · B.Sc. Systems Engineering · Universidad ECCI · Graduated 2024</div>
-      <span class="pill live">Meritorious · In Use</span>
-      <div class="meta-row" style="margin-top:20px;"><span class="k">Adopted by</span><span>SENA Regional Amazonas · Universidad ECCI</span></div>
+      <div class="super">Tesis — el proyecto que me enseñó plomería multidominio</div>
+      <h2 class="s-title" id="thesis-title">Subtitulando <em>Clases.</em></h2>
+      <div class="thesis-title">Sistema Open-Source de Subtitulado en Vivo para Estudiantes con Discapacidad Auditiva</div>
+      <div class="thesis-sub">Tesis 2022–2023 · Ingeniería de Sistemas · Universidad ECCI · Graduado 2024</div>
+      <span class="pill live">Meritoria · En Uso</span>
+      <div class="meta-row" style="margin-top:20px;"><span class="k">Adoptado por</span><span>SENA Regional Amazonas · Universidad ECCI</span></div>
       <div class="meta-row dim"><span class="k">Stack</span><span>Node.js · Mozilla DeepSpeech · NGINX · Custom Dictionary Engine</span></div>
-      <div class="meta-row dim"><span class="k">Publication</span><span><a href="https://repositorio.ecci.edu.co/entities/publication/7fd3d03e-a92f-4be0-8b53-f291f6337808" target="_blank" rel="noopener">ECCI institutional repository ↗</a></span></div>
-      <div class="impact">Built across 2022–2023 after a hearing-impaired classmate had no way to follow lectures in real time. The system generates live subtitles from the teacher's voice directly to the student's screen and stores a full transcript for later review. Completed before the 2024 graduation and awarded a Meritorious distinction. Adopted by two Colombian academic institutions. Zero licensing cost. Deployable by any institution on open source software alone.</div>
-      <div class="footer-note">— the project that taught me what cross-domain plumbing really means.</div>
+      <div class="meta-row dim"><span class="k">Publicación</span><span><a href="https://repositorio.ecci.edu.co/entities/publication/7fd3d03e-a92f-4be0-8b53-f291f6337808" target="_blank" rel="noopener">Repositorio institucional ECCI ↗</a></span></div>
+      <div class="impact">Construido entre 2022 y 2023 después de que un compañero con discapacidad auditiva no tuviera forma de seguir las clases en tiempo real. El sistema genera subtítulos en vivo desde la voz del profesor directo a la pantalla del estudiante y guarda la transcripción completa para revisar después. Completado antes de la graduación de 2024 y reconocido con distinción Meritoria. Adoptado por dos instituciones académicas colombianas. Cero costo de licenciamiento. Desplegable por cualquier institución solo con software open source.</div>
+      <div class="footer-note">— el proyecto que me enseñó qué significa realmente la plomería multidominio.</div>
     </div>
   </section>
 
   <section id="stack" aria-labelledby="stack-title">
     <div class="section-inner">
-      <div class="super">Stack — primary runtime + tooling</div>
-      <h2 class="s-title" id="stack-title">The <em>Tools.</em></h2>
+      <div class="super">Stack — runtime principal + herramientas</div>
+      <h2 class="s-title" id="stack-title">Las <em>Herramientas.</em></h2>
       <div class="cols">
         <div class="col">
-          <h3>Core /</h3>
+          <h3>Núcleo /</h3>
           <ul>
             <li>Python</li>
             <li>FastAPI</li>
@@ -1011,7 +1024,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
           </ul>
         </div>
         <div class="col">
-          <h3>Tooling /</h3>
+          <h3>Herramientas /</h3>
           <ul>
             <li>PostgreSQL</li>
             <li>SQLAlchemy</li>
@@ -1021,35 +1034,35 @@ section.in-view .section-inner { opacity: 1; transform: none; }
           </ul>
         </div>
       </div>
-      <div class="creds"><span class="k">Credentials —</span>AI Automation Engineering · Coderhouse · 2025</div>
+      <div class="creds"><span class="k">Credenciales —</span>AI Automation Engineering · Coderhouse · 2025</div>
     </div>
   </section>
 
   <section id="projects" aria-labelledby="projects-title">
     <div class="section-inner">
-      <div class="super">Projects — three ecosystems treating AI as infrastructure</div>
-      <h2 class="s-title" id="projects-title">Three <em>Ecosystems.</em></h2>
+      <div class="super">Proyectos — tres ecosistemas que tratan la IA como infraestructura</div>
+      <h2 class="s-title" id="projects-title">Tres <em>Ecosistemas.</em></h2>
       <div class="cards">
         <a class="card" href="#bvd">
           <div class="code">BVD · 06</div>
           <h3>Boveda</h3>
-          <div class="tag">Fintech · Local-first OS</div>
-          <div class="one">Personal finance dashboard for Colombian bank accounts — local-first, programmable, yours.</div>
-          <div class="arc"><span>Dashboard → financial brain</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div class="tag">Fintech · OS Local-first</div>
+          <div class="one">Dashboard de finanzas personales para cuentas bancarias colombianas — local-first, programable, tuyo.</div>
+          <div class="arc"><span>Dashboard → cerebro financiero</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
         </a>
         <a class="card" href="#phs">
           <div class="code">PHS · 07</div>
           <h3>Anti-Phishing Shield</h3>
-          <div class="tag">Cybersecurity · Accessibility</div>
-          <div class="one">Open source email phishing protection for elderly users — plain-language warnings, family-installable.</div>
-          <div class="arc"><span>Single check → ISP-level rollout</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div class="tag">Ciberseguridad · Accesibilidad</div>
+          <div class="one">Protección open source contra phishing por correo para adultos mayores — avisos en lenguaje claro, instalable por la familia.</div>
+          <div class="arc"><span>Chequeo único → despliegue a nivel ISP</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
         </a>
         <a class="card" href="#sfm">
           <div class="code">SFM · 08</div>
           <h3>SUPERFARM</h3>
-          <div class="tag">Agri-AI · Orchestration</div>
-          <div class="one">Open agricultural intelligence infrastructure — modular runtime for specialized agricultural agents.</div>
-          <div class="arc"><span>Harness → operating layer for agri</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
+          <div class="tag">Agri-IA · Orquestación</div>
+          <div class="one">Infraestructura abierta de inteligencia agrícola — runtime modular para agentes agrícolas especializados.</div>
+          <div class="arc"><span>Harness → capa operativa para el agro</span><svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6" stroke-linecap="round" stroke-linejoin="round"></path></svg></div>
         </a>
       </div>
     </div>
@@ -1057,73 +1070,73 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 
   <section id="bvd" class="project-section" aria-labelledby="bvd-title">
     <div class="section-inner">
-      <div class="proj-code">BVD · 06 — Project</div>
+      <div class="proj-code">BVD · 06 — Proyecto</div>
       <div class="head-row">
         <h2 class="s-title" id="bvd-title">Bo<em>veda.</em></h2>
-        <span class="pill progress">In Progress</span>
+        <span class="pill progress">En Progreso</span>
       </div>
-      <div class="tagline-row">Personal finance dashboard for Colombian bank accounts.</div>
-      <div class="quote">"Banks own your transactions. They shouldn't own how you understand them."</div>
-      <div class="desc">A local-first fintech experiment exploring structured financial data, rule-based automation, and programmable workflows built on top of Colombian bank statement exports.</div>
+      <div class="tagline-row">Dashboard de finanzas personales para cuentas bancarias colombianas.</div>
+      <div class="quote">&quot;Los bancos son dueños de tus transacciones. No deberían serlo de cómo las entiendes.&quot;</div>
+      <div class="desc">Un experimento fintech local-first explorando datos financieros estructurados, automatización por reglas y workflows programables construidos sobre los exportes de extractos bancarios colombianos.</div>
       <ul class="feats">
-        <li>structured imports from Colombian bank statement exports</li>
-        <li>rule-based categorization (no ML required for the boring 90%)</li>
-        <li>programmable workflows on top of your real ledger</li>
-        <li>local-first storage — your data stays on your machine</li>
+        <li>importación estructurada desde exportes de extractos bancarios colombianos</li>
+        <li>categorización por reglas (sin ML para el 90% aburrido)</li>
+        <li>workflows programables sobre tu libro contable real</li>
+        <li>almacenamiento local-first — tus datos se quedan en tu máquina</li>
       </ul>
-      <div class="vision"><span class="label">Long-term →</span>local imports → rule layer → query DSL → fully programmable personal finance</div>
+      <div class="vision"><span class="label">A largo plazo →</span>imports locales → capa de reglas → DSL de consulta → finanzas personales totalmente programables</div>
       <div class="status-note">— stack: Python · FastAPI · SQLite · SQLAlchemy · React</div>
     </div>
   </section>
 
   <section id="phs" class="project-section" aria-labelledby="phs-title">
     <div class="section-inner">
-      <div class="proj-code">PHS · 07 — Project</div>
+      <div class="proj-code">PHS · 07 — Proyecto</div>
       <div class="head-row">
         <h2 class="s-title" id="phs-title">Anti-Phishing <em>Shield.</em></h2>
-        <span class="pill prototype">Prototype</span>
+        <span class="pill prototype">Prototipo</span>
       </div>
-      <div class="tagline-row">Open source email phishing protection for elderly users.</div>
-      <div class="quote">"Security tools built for engineers fail the people who need them most."</div>
-      <div class="desc">An open source tool designed to help third-age users identify and avoid email phishing attacks. Analyzes suspicious emails and provides plain-language warnings tailored for non-technical users.</div>
+      <div class="tagline-row">Protección open source contra phishing por correo para adultos mayores.</div>
+      <div class="quote">&quot;Las herramientas de seguridad hechas para ingenieros fallan justo con la gente que más las necesita.&quot;</div>
+      <div class="desc">Una herramienta open source diseñada para ayudar a usuarios de la tercera edad a identificar y evitar ataques de phishing por correo. Analiza correos sospechosos y entrega advertencias en lenguaje claro pensadas para usuarios no técnicos.</div>
       <ul class="feats">
-        <li>plain-language risk explanations (no jargon, no scores)</li>
-        <li>UX tuned for third-age users — large type, slow defaults</li>
-        <li>open source so families can run it themselves</li>
-        <li>email-pattern analysis without sending content to third parties</li>
+        <li>explicaciones de riesgo en lenguaje claro (sin jerga, sin puntajes)</li>
+        <li>UX afinada para la tercera edad — tipografía grande, defaults pausados</li>
+        <li>open source para que las familias lo corran ellas mismas</li>
+        <li>análisis de patrones de correo sin enviar contenido a terceros</li>
       </ul>
-      <div class="vision"><span class="label">Long-term →</span>single-email checks → email-account integration → family-installable forwarding inbox → ISP-level rollout</div>
+      <div class="vision"><span class="label">A largo plazo →</span>chequeos de correo único → integración con cuenta de correo → bandeja de reenvío instalable por la familia → despliegue a nivel ISP</div>
       <div class="status-note">— stack: Python · Open Source · Email Analysis · Accessibility</div>
     </div>
   </section>
 
   <section id="sfm" class="project-section has-overflow" aria-labelledby="sfm-title">
     <div class="section-inner">
-      <div class="proj-code">SFM · 08 — Project</div>
+      <div class="proj-code">SFM · 08 — Proyecto</div>
       <div class="head-row">
         <h2 class="s-title" id="sfm-title"><em>Super</em>farm.</h2>
-        <span class="pill research">Research</span>
+        <span class="pill research">Investigación</span>
       </div>
-      <div class="tagline-row">Open agricultural intelligence infrastructure.</div>
-      <div class="quote">"What if agricultural intelligence itself became modular, open, inspectable, and accessible?"</div>
-      <div class="desc">An open-source runtime and orchestration harness for agricultural AI agents — not a chatbot, not a farm app, not another AI wrapper. A modular execution environment where specialized agricultural agents collaborate on shared farm memory, sensors, workflows, and historical context. A farm is a living operational ecosystem — climate, soil, water, animals, crops, finance, logistics, and decisions continuously affecting each other. The intelligence layer should be one too.</div>
+      <div class="tagline-row">Infraestructura abierta de inteligencia agrícola.</div>
+      <div class="quote">&quot;¿Y si la inteligencia agrícola misma se volviera modular, abierta, inspeccionable y accesible?&quot;</div>
+      <div class="desc">Un runtime y harness de orquestación open-source para agentes de IA agrícolas — no un chatbot, no una app de finca, no otro wrapper de IA. Un entorno de ejecución modular donde agentes agrícolas especializados colaboran sobre memoria, sensores, workflows e historial compartidos de la finca. Una finca es un ecosistema operativo vivo — clima, suelo, agua, animales, cultivos, finanzas, logística y decisiones que se afectan entre sí continuamente. La capa de inteligencia debería serlo también.</div>
       <ul class="feats">
-        <li>agent runtime — specialized agricultural agents (SoilScientist, WeatherAgent, HydroponicsAdvisor, ChickenFarmer, CompostEngineer, FinancialAdvisor, IoTDesigner, ScaleUpStrategist) collaborate on the same farm</li>
-        <li>shared farm context — geography, climate, resources, infrastructure, finance, telemetry, and operational history as one persistent model</li>
-        <li>brain router — Claude, OpenAI, Gemini, Ollama, local models; pluggable per task</li>
-        <li>tool layer — weather APIs, GIS, IoT sensors, telemetry, vector DBs, financial workflows</li>
-        <li>open source by design — local deployment, inspectability, technological sovereignty</li>
+        <li>runtime de agentes — agentes agrícolas especializados (SoilScientist, WeatherAgent, HydroponicsAdvisor, ChickenFarmer, CompostEngineer, FinancialAdvisor, IoTDesigner, ScaleUpStrategist) colaborando sobre la misma finca</li>
+        <li>contexto compartido de la finca — geografía, clima, recursos, infraestructura, finanzas, telemetría e historia operativa como un único modelo persistente</li>
+        <li>brain router — Claude, OpenAI, Gemini, Ollama, modelos locales; conectable por tarea</li>
+        <li>capa de herramientas — APIs de clima, GIS, sensores IoT, telemetría, bases de datos vectoriales, workflows financieros</li>
+        <li>open source por diseño — despliegue local, inspeccionabilidad, soberanía tecnológica</li>
       </ul>
-      <div class="vision"><span class="label">Long-term →</span>runtime foundation → specialized agents → sensor + telemetry integration → ecosystem expansion → open agricultural intelligence infrastructure</div>
-      <div class="status-note">— currently in architectural & research phase. validating runtime, orchestration, shared-context models, and modular agent execution.</div>
-      <div class="reference-quote">"Linux became OS infrastructure. Kubernetes became orchestration infrastructure. ROS became robotics infrastructure. SUPERFARM explores the same shape for agriculture."</div>
+      <div class="vision"><span class="label">A largo plazo →</span>base del runtime → agentes especializados → integración de sensores + telemetría → expansión del ecosistema → infraestructura abierta de inteligencia agrícola</div>
+      <div class="status-note">— actualmente en fase arquitectónica e investigativa. validando runtime, orquestación, modelos de contexto compartido y ejecución modular de agentes.</div>
+      <div class="reference-quote">&quot;Linux se volvió infraestructura de OS. Kubernetes se volvió infraestructura de orquestación. ROS se volvió infraestructura de robótica. SUPERFARM explora la misma forma para la agricultura.&quot;</div>
     </div>
   </section>
 
   <section id="now" aria-labelledby="now-title">
     <div class="section-inner">
-      <div class="super">The Lab — recent commits + what's next</div>
-      <h2 class="s-title" id="now-title">Now &amp; <em>Next.</em></h2>
+      <div class="super">The Lab — commits recientes + lo que viene</div>
+      <h2 class="s-title" id="now-title">Ahora y <em>Siguiente.</em></h2>
       <div class="gitlog" role="img" aria-label="recent commits"><span class="cmd">$ git log --oneline -n 8 origin/main</span>
 <span class="hash">a4f1c2e</span>  <span class="msg">chore: add Google Search Console verification file</span>
 <span class="hash">91e8b03</span>  <span class="msg">feat(blog): launch blog with MDX, SSR prerender, RSS, sitemap, and OG metadata</span>
@@ -1136,117 +1149,117 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 
       <div class="cols-2">
         <div class="col">
-          <h3>Now /</h3>
-          <p>Boveda · Anti-Phishing Shield · Automation Workflows</p>
+          <h3>Ahora /</h3>
+          <p>Boveda · Anti-Phishing Shield · Workflows de Automatización</p>
         </div>
         <div class="col">
-          <h3>Next /</h3>
-          <p><span class="bright">[talk]</span> AI &amp; Cybersecurity Forum — Bogotá, May 2026 — <i>"Cybersecurity in the Golden Era of AI: agent models, emerging threats, and prompt injection attacks."</i></p>
+          <h3>Siguiente /</h3>
+          <p><span class="bright">[charla]</span> Foro de IA y Ciberseguridad — Bogotá, mayo 2026 — <i>&quot;Ciberseguridad en la Era Dorada de la IA: modelos de agentes, amenazas emergentes y ataques de prompt injection.&quot;</i></p>
         </div>
       </div>
-      <div class="past"><span class="tag">[talk · past]</span>Cybersecurity Forum — Bogotá, 2025 — Panelist on network security and infrastructure</div>
+      <div class="past"><span class="tag">[charla · pasada]</span>Foro de Ciberseguridad — Bogotá, 2025 — Panelista sobre seguridad de redes e infraestructura</div>
     </div>
   </section>
 
   <section id="archive" class="has-overflow" aria-labelledby="archive-title">
     <div class="section-inner">
-      <div class="super">Archive — postmortems from experiments that died</div>
-      <h2 class="s-title" id="archive-title">Dead <em>Experiments.</em></h2>
+      <div class="super">Archivo — postmortems de experimentos que murieron</div>
+      <h2 class="s-title" id="archive-title">Experimentos <em>Muertos.</em></h2>
       <div class="ls-block">total 2
 drwx------  1 lual  staff  <span class="dir">haycorte/</span>
 drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
-      <div class="epigraph">"Most experiments die. The ones that live earned it."</div>
+      <div class="epigraph">&quot;La mayoría de los experimentos mueren. Los que viven se lo ganaron.&quot;</div>
 
       <div class="entry">
         <div class="entry-head">
-          <span class="tag-killed">Killed</span>
+          <span class="tag-killed">Muerto</span>
           <span class="slug-strike">haycorte</span>
-          <span class="entry-sub">urban disruption intelligence — bogotá</span>
+          <span class="entry-sub">inteligencia sobre interrupciones urbanas — bogotá</span>
         </div>
-        <h4>What it was</h4>
-        <p>WhatsApp-first infrastructure intelligence platform for utility outages (water / electricity / gas) in Bogotá. Bridged the gap between official utility info and how residents already share information in WhatsApp groups.</p>
-        <h4>Why it's strong</h4>
-        <p>Real communication problem; the gap is real.</p>
-        <h4>Why it died</h4>
+        <h4>Qué era</h4>
+        <p>Plataforma de inteligencia de infraestructura WhatsApp-first para cortes de servicios (agua / luz / gas) en Bogotá. Cerraba la brecha entre la información oficial de las empresas de servicios y la forma en que los residentes ya comparten información en grupos de WhatsApp.</p>
+        <h4>Por qué tenía fuerza</h4>
+        <p>Problema de comunicación real; la brecha existe.</p>
+        <h4>Por qué murió</h4>
         <ul class="why">
-          <li><b>Infrastructure dependence.</b> WhatsApp automation, utility scraping, geolocation, cloud APIs — none of it under your control. Continuous reliability required from day one because users only show up during stressful events; one scraper failure or blocked WA flow burns trust instantly.</li>
-          <li><b>Business-structure mismatch.</b> Behaves like a public-utility layer; monetizes like SaaS. Individuals won't pay for outage info. The strongest path (building admins / property mgmt) needs manual sales, onboarding, local ops.</li>
-          <li><b>Episodic engagement.</b> Users only care during outages. Retention depends on scheduled maintenance alerts and community participation, which delays self-sustainability.</li>
-          <li><b>Capital vs. operational burden.</b> Infrastructure-heavy with insufficient early revenue to justify the load. Without capital or a dedicated ops layer, it operates at a loss for too long.</li>
+          <li><b>Dependencia de infraestructura.</b> Automatización de WhatsApp, scraping de empresas de servicios, geolocalización, APIs cloud — nada bajo tu control. Confiabilidad continua exigida desde el día uno porque los usuarios solo aparecen en eventos estresantes; un fallo de scraper o un flujo de WA bloqueado quema la confianza al instante.</li>
+          <li><b>Estructura de negocio incompatible.</b> Se comporta como una capa de servicio público; se monetiza como SaaS. Los individuos no pagan por información de cortes. El camino más fuerte (administradores de edificios / gestión de propiedades) exige ventas manuales, onboarding y operaciones locales.</li>
+          <li><b>Uso episódico.</b> A los usuarios solo les importa durante los cortes. La retención depende de alertas de mantenimientos programados y de participación comunitaria, lo que retrasa la auto-sostenibilidad.</li>
+          <li><b>Capital vs. carga operativa.</b> Infraestructura pesada con ingresos tempranos insuficientes para justificar la carga. Sin capital ni una capa de operaciones dedicada, opera en pérdidas demasiado tiempo.</li>
         </ul>
-        <div class="footer-note">— strategically interesting as a future utility-data layer. for now: archived.</div>
+        <div class="footer-note">— estratégicamente interesante como futura capa de datos de servicios. por ahora: archivado.</div>
       </div>
 
       <div class="divider">— · —</div>
 
       <div class="entry">
         <div class="entry-head">
-          <span class="tag-killed">Killed</span>
+          <span class="tag-killed">Muerto</span>
           <span class="slug-strike">klipper-copilot</span>
-          <span class="entry-sub">ai companion for orcaslicer + klipper</span>
+          <span class="entry-sub">compañero ai para orcaslicer + klipper</span>
         </div>
-        <h4>What it was</h4>
-        <p>An AI-assisted companion layer for OrcaSlicer and Klipper — analyzing slicer profiles, validating printer constraints, and recommending safer print settings for high-performance 3D printers.</p>
-        <h4>Why it's strong</h4>
-        <p>Real systems-engineering pain; tuning these printers is genuinely hard.</p>
-        <h4>Why it died</h4>
+        <h4>Qué era</h4>
+        <p>Una capa companion asistida por IA para OrcaSlicer y Klipper — analizando perfiles del slicer, validando restricciones de la impresora y recomendando ajustes de impresión más seguros para impresoras 3D de alto rendimiento.</p>
+        <h4>Por qué tenía fuerza</h4>
+        <p>Dolor real de ingeniería de sistemas; afinar estas impresoras es genuinamente difícil.</p>
+        <h4>Por qué murió</h4>
         <ul class="why">
-          <li><b>Infra cost &gt; realistic revenue.</b> Reliable optimization needs large datasets of printer configs and failures, telemetry ingestion, hardware-specific tuning models, and continuous testing across many printer variants. Support burden disproportionate to likely revenue.</li>
-          <li><b>Audience economics.</b> Target users (advanced hobbyists) are technically capable, price-sensitive, and resistant to subscriptions — hard acquisition and retention without a large community presence or distribution channel.</li>
-          <li><b>Trust-fragile category.</b> Inconsistent recommendations or one failed print suggestion burns trust fast. High API and hosting costs while debugging edge cases make the early stage punishing.</li>
-          <li><b>Strategic fit.</b> Better classed as a systems-engineering experiment than a product right now; infrastructure and validation requirements exceed probable short-term return. A loss-making launch is strategically unrealistic at this stage.</li>
+          <li><b>Costo de infra &amp;gt; ingresos realistas.</b> Una optimización confiable necesita grandes datasets de configuraciones y fallos de impresoras, ingesta de telemetría, modelos de tuning específicos por hardware y testing continuo en muchas variantes de impresoras. Carga de soporte desproporcionada frente a los ingresos probables.</li>
+          <li><b>Economía de la audiencia.</b> Los usuarios objetivo (hobbyistas avanzados) son técnicamente capaces, sensibles al precio y resistentes a las suscripciones — adquisición y retención duras sin presencia comunitaria fuerte o canal de distribución.</li>
+          <li><b>Categoría frágil en confianza.</b> Recomendaciones inconsistentes o una sola sugerencia de impresión fallida queman la confianza rápido. Costos altos de API y hosting mientras se debuggean casos borde hacen castigadora la etapa temprana.</li>
+          <li><b>Encaje estratégico.</b> Mejor clasificado como un experimento de ingeniería de sistemas que como producto ahora mismo; los requisitos de infraestructura y validación exceden el retorno probable a corto plazo. Un lanzamiento en pérdidas es estratégicamente irrealista en esta etapa.</li>
         </ul>
-        <div class="footer-note">— technically interesting; product-market gravity insufficient. archived.</div>
+        <div class="footer-note">— técnicamente interesante; gravedad producto-mercado insuficiente. archivado.</div>
       </div>
     </div>
   </section>
 
   <section id="trust" aria-labelledby="trust-title">
     <div class="section-inner">
-      <div class="super">Proof — credentials and adoption</div>
-      <h2 class="s-title" id="trust-title">Trust <em>at a glance.</em></h2>
+      <div class="super">Prueba — credenciales y adopción</div>
+      <h2 class="s-title" id="trust-title">Confianza <em>de un vistazo.</em></h2>
       <div class="conn-rows">
-        <div><span class="k">role</span><span class="arrow">→</span>Freelance Automation Engineer · Self-employed · Apr 2024–Present</div>
-        <div><span class="k">role</span><span class="arrow">→</span>QA Tester · Funktronic Labs (Remote) · 2024</div>
+        <div><span class="k">rol</span><span class="arrow">→</span>Ingeniero de Automatización Freelance · Independiente · abr 2024–Presente</div>
+        <div><span class="k">rol</span><span class="arrow">→</span>QA Tester · Funktronic Labs (Remoto) · 2024</div>
         <div><span class="k">cert</span><span class="arrow">→</span>AI Automation Engineering · Coderhouse · 2025</div>
-        <div><span class="k">thesis</span><span class="arrow">→</span>Meritorious thesis project · built 2022–2023 · graduated 2024 — adopted by SENA + ECCI</div>
-        <a href="https://lucholabs.dev" target="_blank" rel="noopener"><span class="k">full</span><span class="arrow">→</span>View full CV ↗</a>
+        <div><span class="k">tesis</span><span class="arrow">→</span>Tesis con distinción Meritoria · construida 2022–2023 · graduado 2024 — adoptada por SENA + ECCI</div>
+        <a href="https://lucholabs.dev/es/" target="_blank" rel="noopener"><span class="k">full</span><span class="arrow">→</span>Ver CV completo ↗</a>
       </div>
     </div>
   </section>
 
   <section id="speaking" aria-labelledby="speaking-title">
     <div class="section-inner">
-      <div class="super">Speaking — talks and panels</div>
-      <h2 class="s-title" id="speaking-title">Speaking <em>proof.</em></h2>
+      <div class="super">Charlas — talks y paneles</div>
+      <h2 class="s-title" id="speaking-title">Charlas <em>al aire.</em></h2>
       <div class="conn-rows">
-        <a href="https://lucholabs.dev/talks/ai-cybersecurity-2026" target="_blank" rel="noopener"><span class="k">2026</span><span class="arrow">→</span>AI &amp; Cybersecurity Forum · Bogotá · May 2026 · Panelist</a>
-        <div><span class="k">2025</span><span class="arrow">→</span>Cybersecurity Forum · Bogotá · 2025 · Panelist</div>
+        <a href="https://lucholabs.dev/es/talks/ai-cybersecurity-2026" target="_blank" rel="noopener"><span class="k">2026</span><span class="arrow">→</span>Foro de IA y Ciberseguridad · Bogotá · mayo 2026 · Panelista</a>
+        <div><span class="k">2025</span><span class="arrow">→</span>Foro de Ciberseguridad · Bogotá · 2025 · Panelista</div>
       </div>
     </div>
   </section>
 
   <section id="subscribe" aria-labelledby="subscribe-title">
     <div class="section-inner">
-      <div class="super">Subscribe — build logs and postmortems</div>
-      <h2 class="s-title" id="subscribe-title">Notified <em>when I publish.</em></h2>
+      <div class="super">Suscríbete — build logs y postmortems</div>
+      <h2 class="s-title" id="subscribe-title">Avísame <em>cuando publiques.</em></h2>
       <form class="conn-rows" style="max-width:480px" action="mailto:lualducor@gmail.com?subject=Subscribe&amp;body=Subscribe%20me%20to%20updates%20at%20lucholabs.dev" method="post" enctype="text/plain">
-        <input type="email" name="email" placeholder="you@domain.com" required style="background:transparent;border:1px solid var(--line-faint);color:var(--fg);padding:12px 16px;font-family:inherit;font-size:14px;width:100%;">
-        <button type="submit" style="background:var(--accent);color:var(--bg);border:none;padding:12px 16px;font-family:inherit;font-size:14px;cursor:pointer;font-weight:600;">Subscribe ↗</button>
+        <input type="email" name="email" placeholder="tu@dominio.com" required style="background:transparent;border:1px solid var(--line-faint);color:var(--fg);padding:12px 16px;font-family:inherit;font-size:14px;width:100%;">
+        <button type="submit" style="background:var(--accent);color:var(--bg);border:none;padding:12px 16px;font-family:inherit;font-size:14px;cursor:pointer;font-weight:600;">Suscribirse ↗</button>
       </form>
-      <div class="source" style="margin-top:12px">— Build logs, postmortems, occasional rants. No spam.</div>
+      <div class="source" style="margin-top:12px">— Build logs, postmortems, rants ocasionales. Sin spam.</div>
     </div>
   </section>
 
   <section id="connect" aria-labelledby="connect-title">
     <div class="section-inner">
-      <div class="super">Connect — channels</div>
-      <h2 class="s-title" id="connect-title">Let's <em>Talk.</em></h2>
+      <div class="super">Conecta — canales</div>
+      <h2 class="s-title" id="connect-title">Hablemos <em>.</em></h2>
       <div class="conn-rows">
         <a href="https://github.com/lualducor" target="_blank" rel="noopener"><span class="k">git</span><span class="arrow">→</span>github.com/lualducor</a>
         <a href="https://www.linkedin.com/in/luis-alberto-duarte-cortes-97748171" target="_blank" rel="noopener"><span class="k">in</span><span class="arrow">→</span>linkedin.com/in/luis-alberto-duarte-cortes-97748171</a>
         <a href="mailto:lualducor@gmail.com"><span class="k">mail</span><span class="arrow">→</span>lualducor@gmail.com</a>
-        <a href="https://lucholabs.dev/blog" target="_blank" rel="noopener"><span class="k">write</span><span class="arrow">→</span>lucholabs.dev/blog<span class="final-cursor" aria-hidden="true"></span></a>
+        <a href="https://lucholabs.dev/es/blog" target="_blank" rel="noopener"><span class="k">write</span><span class="arrow">→</span>lucholabs.dev/es/blog<span class="final-cursor" aria-hidden="true"></span></a>
       </div>
       <div class="source">— Source · <a href="https://github.com/lualducor/THELAB" target="_blank" rel="noopener">github.com/lualducor/THELAB</a></div>
     </div>
@@ -1345,22 +1358,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
   const prevBtn = document.getElementById('pbtn-prev');
   const nextBtn = document.getElementById('pbtn-next');
 
-  const SECTION_LABELS = {
-    hero: 'Hero',
-    manifesto: 'Manifesto',
-    thesis: 'Thesis',
-    stack: 'Stack',
-    projects: 'Projects',
-    bvd: 'Boveda',
-    phs: 'Phishing Shield',
-    sfm: 'Superfarm',
-    trust: 'Trust',
-    speaking: 'Speaking',
-    now: 'Now & Next',
-    archive: 'Archive',
-    subscribe: 'Subscribe',
-    connect: 'Connect'
-  };
+  const SECTION_LABELS = {"hero":"Hero","manifesto":"Manifiesto","thesis":"Tesis","stack":"Stack","projects":"Proyectos","bvd":"Boveda","phs":"Escudo Anti-Phishing","sfm":"Superfarm","trust":"Confianza","speaking":"Charlas","now":"Ahora y Siguiente","archive":"Archivo","subscribe":"Suscríbete","connect":"Conecta"}, sectionLabels = SECTION_LABELS;
 
   let currentSectionId = 'hero';
   let currentIdx = 0;
@@ -1369,7 +1367,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     currentIdx = idx;
     const s = sections[idx];
     currentSectionId = s.id;
-    const label = SECTION_LABELS[s.id] || s.id;
+    const label = sectionLabels[s.id] || s.id;
     crumb.textContent = label;
     stampLabel.textContent = label;
     stampCurrent.textContent = String(idx + 1).padStart(2, '0');
