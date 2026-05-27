@@ -307,11 +307,19 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 .wordmark {
   font-family: var(--f-display);
   font-weight: 500;
-  font-size: clamp(64px, 11vw, 160px);
+  font-size: clamp(36px, 11vw, 160px);
   line-height: 0.85;
   letter-spacing: -0.04em;
   color: var(--fg);
   margin-bottom: 40px;
+  overflow-wrap: anywhere;
+}
+@media (max-width: 420px) {
+  .wordmark {
+    font-size: clamp(28px, 10vw, 42px);
+    letter-spacing: -0.025em;
+    margin-bottom: 28px;
+  }
 }
 .wordmark em { font-style: normal; color: var(--accent); }
 .tagline {
@@ -343,6 +351,27 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 }
 .typer-line .caret.idle { animation: blink 1.05s steps(1, end) infinite; }
 @keyframes blink { 50% { background: transparent; } }
+
+/* -------- Hero one-shot typewriter reveal -------- */
+.tw-pending #hero .wordmark,
+.tw-pending #hero .tagline,
+.tw-pending #hero .typer-line,
+.tw-pending #hero .sub,
+.tw-pending #hero .scroll-cue {
+  visibility: hidden;
+}
+.reveal-caret {
+  display: inline-block;
+  width: 0.5em;
+  height: 0.95em;
+  background: var(--accent);
+  margin-left: 4px;
+  vertical-align: -0.1em;
+  animation: blink 1.05s steps(1, end) infinite;
+}
+.wordmark .reveal-caret { width: 0.08em; height: 0.78em; vertical-align: -0.05em; }
+.sub .reveal-caret,
+.scroll-cue .reveal-caret { height: 0.85em; width: 0.4em; }
 .sub {
   font-family: var(--f-mono);
   font-size: 13px;
@@ -922,6 +951,16 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   .scroller { scroll-behavior: auto; }
 }
 </style>
+<script>
+/* Hide hero pre-paint so the typewriter reveal can run without a flash.
+   Guarded by reduced-motion; without JS, hero stays visible as a fallback. */
+(function () {
+  try {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    document.documentElement.classList.add('tw-pending');
+  } catch (e) { /* no-op */ }
+})();
+</script>
 <% if (it.locale === 'es') { %>
 <script type="application/ld+json">
 {
@@ -1367,7 +1406,82 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
       if (qi >= queue.length) { queue = shuffled(TYPER_WORDS); qi = 0; }
     }
   }
-  typewriter();
+
+  // -------- One-shot hero reveal (runs before the cycling typewriter) --------
+  function tokenizeHtml(html) {
+    const tokens = [];
+    const re = /<[^>]+>|[^<]+/g;
+    let m;
+    while ((m = re.exec(html)) !== null) {
+      tokens.push({ tag: m[0][0] === '<', value: m[0] });
+    }
+    return tokens;
+  }
+
+  async function typeHTML(el, html, delay) {
+    const tokens = tokenizeHtml(html);
+    let buffer = '';
+    for (const tok of tokens) {
+      if (tok.tag) {
+        buffer += tok.value;
+        el.innerHTML = buffer + '<span class="reveal-caret" aria-hidden="true"></span>';
+      } else {
+        for (const ch of Array.from(tok.value)) {
+          buffer += ch;
+          el.innerHTML = buffer + '<span class="reveal-caret" aria-hidden="true"></span>';
+          await sleep(delay + Math.random() * 6);
+        }
+      }
+    }
+    el.innerHTML = buffer;
+  }
+
+  async function revealHero() {
+    const root = document.documentElement;
+    if (reduceMotion) { root.classList.remove('tw-pending'); return; }
+    if (!root.classList.contains('tw-pending')) return;
+
+    const hero = document.getElementById('hero');
+    if (!hero) { root.classList.remove('tw-pending'); return; }
+
+    const wordmark = hero.querySelector('.wordmark');
+    const tagline = hero.querySelector('.tagline');
+    const typerLine = hero.querySelector('.typer-line');
+    const label = typerLine ? typerLine.querySelector('.label') : null;
+    const sub = hero.querySelector('.sub');
+    const scrollCue = hero.querySelector('.scroll-cue');
+
+    const targets = [wordmark, tagline, label, sub, scrollCue].filter(Boolean);
+
+    // Lock heights + clear contents while still visibility:hidden
+    targets.forEach(el => {
+      const h = el.getBoundingClientRect().height;
+      if (h > 0) el.style.minHeight = h + 'px';
+      el.dataset.tw = el.innerHTML;
+      el.innerHTML = '';
+    });
+
+    // Reveal the structural blocks; individual elements are now empty
+    root.classList.remove('tw-pending');
+
+    const steps = [
+      { el: wordmark, delay: 55 },
+      { el: tagline, delay: 22 },
+      { el: label, delay: 38 },
+      { el: sub, delay: 14 },
+      { el: scrollCue, delay: 26 },
+    ];
+
+    for (const { el, delay } of steps) {
+      if (!el) continue;
+      await typeHTML(el, el.dataset.tw, delay);
+      delete el.dataset.tw;
+      el.style.minHeight = '';
+      await sleep(120);
+    }
+  }
+
+  revealHero().then(typewriter);
 
   // -------- Section tracking + chrome + hash --------
   const scroller = document.getElementById('scroller');
