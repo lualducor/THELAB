@@ -1282,18 +1282,6 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     </div>
   </section>
 
-  <section id="subscribe" aria-labelledby="subscribe-title">
-    <div class="section-inner">
-      <div class="super">Suscríbete — build logs y postmortems</div>
-      <h2 class="s-title" id="subscribe-title">Avísame <em>cuando publiques.</em></h2>
-      <form class="conn-rows" style="max-width:480px" action="mailto:lualducor@gmail.com?subject=Subscribe&amp;body=Subscribe%20me%20to%20updates%20at%20lucholabs.dev" method="post" enctype="text/plain">
-        <input type="email" name="email" placeholder="tu@dominio.com" required style="background:transparent;border:1px solid var(--line-faint);color:var(--fg);padding:12px 16px;font-family:inherit;font-size:14px;width:100%;">
-        <button type="submit" style="background:var(--accent);color:var(--bg);border:none;padding:12px 16px;font-family:inherit;font-size:14px;cursor:pointer;font-weight:600;">Suscribirse ↗</button>
-      </form>
-      <div class="source" style="margin-top:12px">— Build logs, postmortems, rants ocasionales. Sin spam.</div>
-    </div>
-  </section>
-
   <section id="connect" aria-labelledby="connect-title">
     <div class="section-inner">
       <div class="super">Conecta — canales</div>
@@ -1312,7 +1300,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
 
 <footer class="chrome chrome--bot" role="contentinfo">
   <div class="stamp">
-    <span id="stamp-current">01</span><span class="stamp-sep">/</span><span>14</span><span class="stamp-sep">—</span><span id="stamp-label">Hero</span>
+    <span id="stamp-current">01</span><span class="stamp-sep">/</span><span>13</span><span class="stamp-sep">—</span><span id="stamp-label">Hero</span>
   </div>
   <div class="pager">
     <button class="pbtn" id="pbtn-prev" aria-label="previous section" disabled>
@@ -1476,7 +1464,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
   const prevBtn = document.getElementById('pbtn-prev');
   const nextBtn = document.getElementById('pbtn-next');
 
-  const SECTION_LABELS = {"hero":"Hero","manifesto":"Manifiesto","thesis":"Tesis","stack":"Stack","projects":"Proyectos","bvd":"Boveda","phs":"Escudo Anti-Phishing","sfm":"Superfarm","trust":"Confianza","speaking":"Charlas","now":"Ahora y Siguiente","archive":"Archivo","subscribe":"Suscríbete","connect":"Conecta"}, sectionLabels = SECTION_LABELS;
+  const SECTION_LABELS = {"hero":"Hero","manifesto":"Manifiesto","thesis":"Tesis","stack":"Stack","projects":"Proyectos","bvd":"Boveda","phs":"Escudo Anti-Phishing","sfm":"Superfarm","trust":"Confianza","speaking":"Charlas","now":"Ahora y Siguiente","archive":"Archivo","connect":"Conecta"}, sectionLabels = SECTION_LABELS;
 
   let currentSectionId = 'hero';
   let currentIdx = 0;
@@ -1524,6 +1512,26 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     }
   }, { root: scroller, threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] });
   sections.forEach(s => observer.observe(s));
+
+  // Dedicated observer for section titles — independent of section size.
+  // The main observer above only fires applyIndex() when a section reaches
+  // intersectionRatio > 0.4, which never happens for very tall sections
+  // (like #archive) where viewport / section-height < 0.4. The title is a
+  // small element, so observing it directly with a low threshold lets the
+  // typewriter reveal fire reliably as soon as the title enters view.
+  if (!reduceMotion) {
+    const titleObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const section = entry.target.closest('section');
+        if (section) revealSectionTitle(section);
+        titleObserver.unobserve(entry.target);
+      }
+    }, { root: scroller, threshold: 0.1 });
+    document
+      .querySelectorAll('section:not(#hero) .s-title')
+      .forEach(t => titleObserver.observe(t));
+  }
 
   // Initial hash routing
   if (location.hash && location.hash.length > 1) {

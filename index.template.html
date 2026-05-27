@@ -1303,18 +1303,6 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     </div>
   </section>
 
-  <section id="subscribe" aria-labelledby="subscribe-title">
-    <div class="section-inner">
-      <div class="super"><%= it.t({ en: 'Subscribe — build logs and postmortems', es: 'Suscríbete — build logs y postmortems' }, it.locale) %></div>
-      <h2 class="s-title" id="subscribe-title"><%= it.t({ en: 'Notified', es: 'Avísame' }, it.locale) %> <em><%= it.t({ en: 'when I publish.', es: 'cuando publiques.' }, it.locale) %></em></h2>
-      <form class="conn-rows" style="max-width:480px" action="mailto:lualducor@gmail.com?subject=Subscribe&amp;body=Subscribe%20me%20to%20updates%20at%20lucholabs.dev" method="post" enctype="text/plain">
-        <input type="email" name="email" placeholder="<%= it.t({ en: 'you@domain.com', es: 'tu@dominio.com' }, it.locale) %>" required style="background:transparent;border:1px solid var(--line-faint);color:var(--fg);padding:12px 16px;font-family:inherit;font-size:14px;width:100%;">
-        <button type="submit" style="background:var(--accent);color:var(--bg);border:none;padding:12px 16px;font-family:inherit;font-size:14px;cursor:pointer;font-weight:600;"><%= it.t({ en: 'Subscribe ↗', es: 'Suscribirse ↗' }, it.locale) %></button>
-      </form>
-      <div class="source" style="margin-top:12px"><%= it.t({ en: '— Build logs, postmortems, occasional rants. No spam.', es: '— Build logs, postmortems, rants ocasionales. Sin spam.' }, it.locale) %></div>
-    </div>
-  </section>
-
   <section id="connect" aria-labelledby="connect-title">
     <div class="section-inner">
       <div class="super"><%= it.t({ en: 'Connect — channels', es: 'Conecta — canales' }, it.locale) %></div>
@@ -1333,7 +1321,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
 
 <footer class="chrome chrome--bot" role="contentinfo">
   <div class="stamp">
-    <span id="stamp-current">01</span><span class="stamp-sep">/</span><span>14</span><span class="stamp-sep">—</span><span id="stamp-label">Hero</span>
+    <span id="stamp-current">01</span><span class="stamp-sep">/</span><span>13</span><span class="stamp-sep">—</span><span id="stamp-label">Hero</span>
   </div>
   <div class="pager">
     <button class="pbtn" id="pbtn-prev" aria-label="previous section" disabled>
@@ -1510,7 +1498,6 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     speaking: it.t({ en: 'Speaking', es: 'Charlas' }, it.locale),
     now: it.t({ en: 'Now & Next', es: 'Ahora y Siguiente' }, it.locale),
     archive: it.t({ en: 'Archive', es: 'Archivo' }, it.locale),
-    subscribe: it.t({ en: 'Subscribe', es: 'Suscríbete' }, it.locale),
     connect: it.t({ en: 'Connect', es: 'Conecta' }, it.locale)
   }) %>, sectionLabels = SECTION_LABELS;
 
@@ -1560,6 +1547,26 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     }
   }, { root: scroller, threshold: [0, 0.2, 0.4, 0.6, 0.8, 1] });
   sections.forEach(s => observer.observe(s));
+
+  // Dedicated observer for section titles — independent of section size.
+  // The main observer above only fires applyIndex() when a section reaches
+  // intersectionRatio > 0.4, which never happens for very tall sections
+  // (like #archive) where viewport / section-height < 0.4. The title is a
+  // small element, so observing it directly with a low threshold lets the
+  // typewriter reveal fire reliably as soon as the title enters view.
+  if (!reduceMotion) {
+    const titleObserver = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const section = entry.target.closest('section');
+        if (section) revealSectionTitle(section);
+        titleObserver.unobserve(entry.target);
+      }
+    }, { root: scroller, threshold: 0.1 });
+    document
+      .querySelectorAll('section:not(#hero) .s-title')
+      .forEach(t => titleObserver.observe(t));
+  }
 
   // Initial hash routing
   if (location.hash && location.hash.length > 1) {
