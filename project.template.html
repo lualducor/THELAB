@@ -553,10 +553,11 @@ a { color: inherit; text-decoration: none; }
 </footer>
 
 <script>
-/* Animated ASCII background — a faint, living wall of the lab's own vocabulary
-   (window.LAB_WORDS, the same list the hero typewriter cycles). Words render in
-   white at the .bg-ascii layer's low opacity + lighten blend; each tick
-   re-flickers the brightness of ~2% of the words in place. Replaces the old
+/* Animated ASCII background — a faint field of random ASCII glyphs with the
+   lab's own vocabulary (window.LAB_WORDS, the list the hero typewriter cycles)
+   scattered through it. White tone at the .bg-ascii layer's low opacity +
+   lighten blend. Glyphs flicker; scattered words periodically retire and
+   respawn elsewhere, so the terms drift across the field. Replaces the old
    415KB ascii-texture.png. Honors prefers-reduced-motion; pauses when hidden. */
 (function () {
   var canvas = document.getElementById('bg-ascii');
@@ -565,54 +566,82 @@ a { color: inherit; text-decoration: none; }
   if (!ctx) return;
 
   var WORDS = (window.LAB_WORDS && window.LAB_WORDS.length) ? window.LAB_WORDS : ['lucholabs'];
-  var FONT_PX = 13;   // word size
-  var LINE_H = 22;    // row pitch
-  var SEP = '   ';    // gap between words on a row
+  var GLYPHS = '01<>[]{}()/\\|=+*#%&$@?!;:.,-_~^abcdefghijklmnopqrstuvwxyz0123456789';
+  var FONT_PX = 15, CELL_W = 12, CELL_H = 17;
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var tokens = [], timer = null;
+  var cols = 0, rows = 0, cells = null, words = [], timer = null, t = 0;
 
-  function rndWord() { return WORDS[(Math.random() * WORDS.length) | 0]; }
-  function rndAlpha() { return 0.10 + Math.random() * 0.70; }
+  function rndGlyph() { return GLYPHS.charAt((Math.random() * GLYPHS.length) | 0); }
+  function glyphAlpha() { return 0.10 + Math.random() * 0.38; }   // faint noise
+  function wordAlpha() { return 0.50 + Math.random() * 0.45; }    // words read brighter
 
-  function paint(tk) {
-    ctx.clearRect(tk.x - 1, tk.y, tk.w + 2, LINE_H);
-    ctx.globalAlpha = tk.a;
-    ctx.fillText(tk.t, tk.x, tk.y);
+  function paintCell(i) {
+    var x = (i % cols) * CELL_W, y = ((i / cols) | 0) * CELL_H;
+    ctx.clearRect(x, y, CELL_W, CELL_H);
+    ctx.globalAlpha = cells[i].a;
+    ctx.fillText(cells[i].c, x, y);
+  }
+
+  function setGlyph(i) { cells[i] = { c: rndGlyph(), a: glyphAlpha(), w: false }; }
+
+  // Place one vocabulary word at a random free spot (1-cell padding each side).
+  // Returns the affected cell indices, or null if no room was found.
+  function placeWord() {
+    var word = WORDS[(Math.random() * WORDS.length) | 0];
+    var len = word.length;
+    if (len > cols - 4) return null;
+    for (var attempt = 0; attempt < 14; attempt++) {
+      var r = (Math.random() * rows) | 0;
+      var c = 1 + ((Math.random() * (cols - len - 2)) | 0);
+      var start = r * cols + c, ok = true;
+      for (var k = -1; k <= len; k++) { if (cells[start + k].w) { ok = false; break; } }
+      if (!ok) continue;
+      var wc = [];
+      for (var j = 0; j < len; j++) {
+        var idx = start + j;
+        cells[idx] = { c: word.charAt(j), a: wordAlpha(), w: true };
+        wc.push(idx);
+      }
+      words.push(wc);
+      return wc;
+    }
+    return null;
   }
 
   function build() {
-    var w = window.innerWidth, h = window.innerHeight;
-    canvas.width = w;   // DPR 1: a faint background; crispness is irrelevant and cheapest
-    canvas.height = h;
+    var ww = window.innerWidth, hh = window.innerHeight;
+    canvas.width = ww; canvas.height = hh;   // DPR 1: faint background, cheapest
+    cols = Math.ceil(ww / CELL_W); rows = Math.ceil(hh / CELL_H);
+    var n = cols * rows;
+    cells = new Array(n); words = [];
     ctx.font = FONT_PX + "px ui-monospace, 'JetBrains Mono', monospace";
     ctx.textBaseline = 'top';
     ctx.fillStyle = '#ffffff';   // white tone; the .bg-ascii layer applies its opacity + lighten
-    var sepW = ctx.measureText(SEP).width;
-    tokens = [];
-    for (var y = -4; y < h; y += LINE_H) {
-      var x = Math.random() * 60;   // organic per-row offset
-      while (x < w) {
-        var word = rndWord();
-        var tw = ctx.measureText(word).width;
-        var tk = { t: word, x: x, y: y, w: tw, a: rndAlpha() };
-        tokens.push(tk);
-        paint(tk);
-        x += tw + sepW;
-      }
-    }
+    for (var i = 0; i < n; i++) setGlyph(i);
+    var target = Math.max(6, Math.round(n / 220));   // scattered word density
+    for (var a = 0; a < target * 3 && words.length < target; a++) placeWord();
+    for (var p = 0; p < n; p++) paintCell(p);
   }
 
   function tick() {
-    if (document.hidden || !tokens.length) return;
-    var changes = Math.max(1, (tokens.length * 0.02) | 0);
+    if (document.hidden) return;
+    var n = cols * rows, changes = Math.max(1, (n * 0.01) | 0);
     for (var k = 0; k < changes; k++) {
-      var tk = tokens[(Math.random() * tokens.length) | 0];
-      tk.a = rndAlpha();
-      paint(tk);
+      var i = (Math.random() * n) | 0;
+      if (cells[i].w) { cells[i].a = wordAlpha(); }              // word cell: flicker brightness
+      else { cells[i].c = rndGlyph(); cells[i].a = glyphAlpha(); }
+      paintCell(i);
+    }
+    // Drift: periodically retire one word and scatter a fresh one elsewhere.
+    if ((++t % 12) === 0 && words.length) {
+      var gone = words.splice((Math.random() * words.length) | 0, 1)[0];
+      for (var g = 0; g < gone.length; g++) { setGlyph(gone[g]); paintCell(gone[g]); }
+      var fresh = placeWord();
+      if (fresh) for (var f = 0; f < fresh.length; f++) paintCell(fresh[f]);
     }
   }
 
-  function start() { if (!timer && !reduceMotion) timer = setInterval(tick, 110); }
+  function start() { if (!timer && !reduceMotion) timer = setInterval(tick, 90); }
   function stop() { if (timer) { clearInterval(timer); timer = null; } }
 
   var rz;
