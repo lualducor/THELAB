@@ -1,0 +1,19 @@
+[
+  "automation", "n8n", "FastAPI", "Python", "Linux", "PostgreSQL", "SQLAlchemy", "webhooks", "REST APIs", "Postman",
+  "Make.com", "SQLite", "React", "TypeScript", "Vite", "Node.js", "Mozilla DeepSpeech", "NGINX", "Groq", "Claude",
+  "OpenAI", "Gemini", "Ollama", "local models", "vector databases", "LoRaWAN", "GIS systems", "IoT sensors", "PostGIS", "Leaflet",
+  "LLMs as runtime", "AI as infrastructure", "agent orchestration", "multi-agent systems", "shared memory", "model routing", "prompt injection", "tool use", "structured outputs", "function calling",
+  "workflow primitives", "inference reliability", "AI workflows", "agent guardrails", "context engineering", "shared farm context", "operational memory", "brain routers", "specialized agents", "agricultural intelligence",
+  "personal finance", "Colombian banks", "bank statement exports", "rule-based categorization", "programmable ledgers", "local-first data", "query DSLs", "email phishing", "third-age UX", "plain-language warnings",
+  "accessibility-first design", "open security tools", "family-installable inboxes", "modular runtimes", "soil reasoning", "weather agents", "hydroponic planning", "livestock optimization", "compost coordination", "irrigation management",
+  "financial forecasting", "crop analysis", "farm telemetry", "open agricultural standards", "utility outages", "WhatsApp-first systems", "community validation", "infrastructure intelligence", "urban disruption", "live captioning",
+  "speech recognition", "accessibility for the hearing-impaired", "classroom inclusion", "zero-licensing tooling", "open-source impact",
+  "systems thinking", "cross-domain work", "the seams between APIs", "where workflows leak", "observability", "reliability over impressiveness", "technological sovereignty", "inspectability", "local deployment", "open source",
+  "distributed research", "democratized intelligence", "augmenting decisions", "composable infrastructure", "modular by default", "composable by design", "inspectable agents", "portable runtimes", "retrieval as a primitive", "structured imports",
+  "the boring 90%", "ambient automation", "self-hostable AI", "low-connectivity regions", "open by default",
+  "the lab", "/archive/dead", "/lab/now", "postmortems", "shipped quietly", "iteration", "ambient experiments", "retros", "builder labs", "the willingness to write the postmortem",
+  "phosphor green", "matrix rain", "terminals", "monospace", "the console", "ASCII", "cyberpunk HUDs", "polybar", "Linux Mint", "neon green",
+  "Bogotá", "Colombia", "LATAM", "remote-async", "C1 English", "cybersecurity", "prompt-injection defense", "agent threats", "the golden era of AI", "emerging cybersecurity",
+  "network security", "infrastructure security", "regional realities", "microregions", "cooperatives",
+  "shipping > announcing", "the postmortem file", "README-driven design", "saying no to scope", "the willingness to delete"
+]

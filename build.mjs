@@ -36,6 +36,13 @@ for (const templatePath of [INDEX_TEMPLATE_PATH, PROJECT_TEMPLATE_PATH, ARCHIVE_
 }
 
 const content = JSON.parse(readFileSync(CONTENT_PATH, 'utf-8'));
+
+// Shared vocabulary — single source of truth for the hero typewriter AND the
+// animated ASCII background. Injected into every page as window.LAB_WORDS.
+const VOCAB_PATH = resolve(__dirname, 'lab-vocabulary.json');
+const vocabulary = existsSync(VOCAB_PATH) ? JSON.parse(readFileSync(VOCAB_PATH, 'utf-8')) : [];
+const vocabularyJson = JSON.stringify(vocabulary);
+
 const indexTemplate = readFileSync(INDEX_TEMPLATE_PATH, 'utf-8');
 const projectTemplate = readFileSync(PROJECT_TEMPLATE_PATH, 'utf-8');
 const archiveTemplate = readFileSync(ARCHIVE_TEMPLATE_PATH, 'utf-8');
@@ -59,7 +66,7 @@ function renderTemplate(template, data) {
 }
 
 function renderIndex(locale) {
-  return renderTemplate(indexTemplate, { ...content, t, locale });
+  return renderTemplate(indexTemplate, { ...content, t, locale, vocabularyJson });
 }
 
 function writeOutput(outputPath, html) {
@@ -253,6 +260,7 @@ for (const locale of ['en', 'es']) {
         ...content,
         t,
         locale,
+        vocabularyJson,
         page: buildProjectPage(project, locale, projectId),
         project,
       }),
@@ -272,6 +280,7 @@ for (const locale of ['en', 'es']) {
       ...content,
       t,
       locale,
+      vocabularyJson,
       page: buildArchivePage(locale),
       projects: getArchiveProjects(),
     }),

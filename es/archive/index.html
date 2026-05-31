@@ -444,6 +444,7 @@ a { color: inherit; text-decoration: none; }
   "inLanguage": "es"
 }</script>
 <script defer data-domain="lucholabs.dev" src="https://plausible.io/js/script.js"></script>
+<script>window.LAB_WORDS = ["automation","n8n","FastAPI","Python","Linux","PostgreSQL","SQLAlchemy","webhooks","REST APIs","Postman","Make.com","SQLite","React","TypeScript","Vite","Node.js","Mozilla DeepSpeech","NGINX","Groq","Claude","OpenAI","Gemini","Ollama","local models","vector databases","LoRaWAN","GIS systems","IoT sensors","PostGIS","Leaflet","LLMs as runtime","AI as infrastructure","agent orchestration","multi-agent systems","shared memory","model routing","prompt injection","tool use","structured outputs","function calling","workflow primitives","inference reliability","AI workflows","agent guardrails","context engineering","shared farm context","operational memory","brain routers","specialized agents","agricultural intelligence","personal finance","Colombian banks","bank statement exports","rule-based categorization","programmable ledgers","local-first data","query DSLs","email phishing","third-age UX","plain-language warnings","accessibility-first design","open security tools","family-installable inboxes","modular runtimes","soil reasoning","weather agents","hydroponic planning","livestock optimization","compost coordination","irrigation management","financial forecasting","crop analysis","farm telemetry","open agricultural standards","utility outages","WhatsApp-first systems","community validation","infrastructure intelligence","urban disruption","live captioning","speech recognition","accessibility for the hearing-impaired","classroom inclusion","zero-licensing tooling","open-source impact","systems thinking","cross-domain work","the seams between APIs","where workflows leak","observability","reliability over impressiveness","technological sovereignty","inspectability","local deployment","open source","distributed research","democratized intelligence","augmenting decisions","composable infrastructure","modular by default","composable by design","inspectable agents","portable runtimes","retrieval as a primitive","structured imports","the boring 90%","ambient automation","self-hostable AI","low-connectivity regions","open by default","the lab","/archive/dead","/lab/now","postmortems","shipped quietly","iteration","ambient experiments","retros","builder labs","the willingness to write the postmortem","phosphor green","matrix rain","terminals","monospace","the console","ASCII","cyberpunk HUDs","polybar","Linux Mint","neon green","Bogotá","Colombia","LATAM","remote-async","C1 English","cybersecurity","prompt-injection defense","agent threats","the golden era of AI","emerging cybersecurity","network security","infrastructure security","regional realities","microregions","cooperatives","shipping > announcing","the postmortem file","README-driven design","saying no to scope","the willingness to delete"];</script>
 </head>
 <body>
 
@@ -540,55 +541,66 @@ a { color: inherit; text-decoration: none; }
 </footer>
 
 <script>
-/* Animated ASCII background — replaces the static 415KB ascii-texture.png.
-   Faint warm-white glyph field (same tone + the layer's 0.1 opacity / lighten
-   blend as the old texture) that flickers in place. ~1% of cells repaint per
-   tick; honors prefers-reduced-motion and pauses when the tab is hidden. */
+/* Animated ASCII background — a faint, living wall of the lab's own vocabulary
+   (window.LAB_WORDS, the same list the hero typewriter cycles). Words render in
+   white at the .bg-ascii layer's low opacity + lighten blend; each tick
+   re-flickers the brightness of ~2% of the words in place. Replaces the old
+   415KB ascii-texture.png. Honors prefers-reduced-motion; pauses when hidden. */
 (function () {
   var canvas = document.getElementById('bg-ascii');
   if (!canvas || !canvas.getContext) return;
   var ctx = canvas.getContext('2d', { alpha: true });
   if (!ctx) return;
 
-  var GLYPHS = '01<>[]{}()/\\|=+*#%&$@?!;:.,-_~^abcdefghijklmnopqrstuvwxyz0123456789';
-  var FONT_PX = 15, CELL_W = 12, CELL_H = 17;
+  var WORDS = (window.LAB_WORDS && window.LAB_WORDS.length) ? window.LAB_WORDS : ['lucholabs'];
+  var FONT_PX = 13;   // word size
+  var LINE_H = 22;    // row pitch
+  var SEP = '   ';    // gap between words on a row
   var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  var cols = 0, rows = 0, cells = null, timer = null;
+  var tokens = [], timer = null;
 
-  function rndGlyph() { return GLYPHS.charAt((Math.random() * GLYPHS.length) | 0); }
-  function rndAlpha() { return 0.12 + Math.random() * 0.78; }
+  function rndWord() { return WORDS[(Math.random() * WORDS.length) | 0]; }
+  function rndAlpha() { return 0.10 + Math.random() * 0.70; }
 
-  function paintCell(i) {
-    var x = (i % cols) * CELL_W;
-    var y = ((i / cols) | 0) * CELL_H;
-    ctx.clearRect(x, y, CELL_W, CELL_H);
-    ctx.globalAlpha = cells[i].a;
-    ctx.fillText(cells[i].g, x, y);
+  function paint(tk) {
+    ctx.clearRect(tk.x - 1, tk.y, tk.w + 2, LINE_H);
+    ctx.globalAlpha = tk.a;
+    ctx.fillText(tk.t, tk.x, tk.y);
   }
 
   function build() {
     var w = window.innerWidth, h = window.innerHeight;
-    canvas.width = w; canvas.height = h;
-    cols = Math.ceil(w / CELL_W);
-    rows = Math.ceil(h / CELL_H);
-    var n = cols * rows;
-    cells = new Array(n);
+    canvas.width = w;   // DPR 1: a faint background; crispness is irrelevant and cheapest
+    canvas.height = h;
     ctx.font = FONT_PX + "px ui-monospace, 'JetBrains Mono', monospace";
     ctx.textBaseline = 'top';
-    ctx.fillStyle = '#fffaee';
-    for (var i = 0; i < n; i++) { cells[i] = { g: rndGlyph(), a: rndAlpha() }; paintCell(i); }
-  }
-
-  function tick() {
-    if (document.hidden) return;
-    var n = cols * rows, changes = Math.max(1, (n * 0.012) | 0);
-    for (var k = 0; k < changes; k++) {
-      var i = (Math.random() * n) | 0;
-      cells[i].g = rndGlyph(); cells[i].a = rndAlpha(); paintCell(i);
+    ctx.fillStyle = '#ffffff';   // white tone; the .bg-ascii layer applies its opacity + lighten
+    var sepW = ctx.measureText(SEP).width;
+    tokens = [];
+    for (var y = -4; y < h; y += LINE_H) {
+      var x = Math.random() * 60;   // organic per-row offset
+      while (x < w) {
+        var word = rndWord();
+        var tw = ctx.measureText(word).width;
+        var tk = { t: word, x: x, y: y, w: tw, a: rndAlpha() };
+        tokens.push(tk);
+        paint(tk);
+        x += tw + sepW;
+      }
     }
   }
 
-  function start() { if (!timer && !reduceMotion) timer = setInterval(tick, 90); }
+  function tick() {
+    if (document.hidden || !tokens.length) return;
+    var changes = Math.max(1, (tokens.length * 0.02) | 0);
+    for (var k = 0; k < changes; k++) {
+      var tk = tokens[(Math.random() * tokens.length) | 0];
+      tk.a = rndAlpha();
+      paint(tk);
+    }
+  }
+
+  function start() { if (!timer && !reduceMotion) timer = setInterval(tick, 110); }
   function stop() { if (timer) { clearInterval(timer); timer = null; } }
 
   var rz;
