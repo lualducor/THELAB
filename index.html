@@ -1022,7 +1022,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
         </div>
         <div class="block">
           <div class="block-h"><span class="n">02.</span>AI as Infrastructure</div>
-          <div class="block-body">LLMs aren&#39;t the product; they&#39;re a runtime. The Product Review Classifier runs Groq&#39;s llama-3.1-8b-instant behind n8n as a workflow primitive — like Postgres or Redis, but for natural language. The interesting work is wiring AI into systems where it has to be reliable, not where it has to be impressive.</div>
+          <div class="block-body">LLMs aren&#39;t the product; they&#39;re a runtime — and a runtime is only as good as the context you feed it. The real infrastructure is everything around the model: retrieval, grounding, shared memory, and the trust boundary that decides which inputs an agent is allowed to act on. My thesis didn&#39;t fine-tune a speech model; it wrapped a generic one in a custom dictionary engine so it actually worked in a Colombian classroom. SUPERFARM is the same bet — a persistent shared-context model the agents reason over. Context is the engineering. The model is the easy part.</div>
         </div>
         <div class="block">
           <div class="block-h"><span class="n">03.</span>Cross-Domain Vision</div>
@@ -1030,7 +1030,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
         </div>
         <div class="block">
           <div class="block-h"><span class="n">04.</span>Builder-Lab Identity</div>
-          <div class="block-body">/lab is what it says. Some experiments are live (Boveda, Phishing Shield). Some shipped and quiet (Product Review Classifier). Some are archived because the math didn&#39;t work (HayCorte, Klipper Copilot — postmortems below). The credibility isn&#39;t a hit rate; it&#39;s the willingness to write the postmortem.</div>
+          <div class="block-body">/lab is what it says. Some experiments are in active development (Boveda, Phishing Shield). Some are still research (SUPERFARM). Some are archived because the math didn&#39;t work (HayCorte, Klipper Copilot — postmortems below). The credibility isn&#39;t a hit rate; it&#39;s the willingness to write the postmortem.</div>
         </div>
       </div>
     </div>
@@ -1324,7 +1324,7 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     'Make.com', 'SQLite', 'React', 'TypeScript', 'Vite', 'Node.js', 'Mozilla DeepSpeech', 'NGINX', 'Groq', 'Claude',
     'OpenAI', 'Gemini', 'Ollama', 'local models', 'vector databases', 'LoRaWAN', 'GIS systems', 'IoT sensors', 'PostGIS', 'Leaflet',
     'LLMs as runtime', 'AI as infrastructure', 'agent orchestration', 'multi-agent systems', 'shared memory', 'model routing', 'prompt injection', 'tool use', 'structured outputs', 'function calling',
-    'workflow primitives', 'inference reliability', 'AI workflows', 'agent guardrails', 'llama-3.1-8b', 'shared farm context', 'operational memory', 'brain routers', 'specialized agents', 'agricultural intelligence',
+    'workflow primitives', 'inference reliability', 'AI workflows', 'agent guardrails', 'context engineering', 'shared farm context', 'operational memory', 'brain routers', 'specialized agents', 'agricultural intelligence',
     'personal finance', 'Colombian banks', 'bank statement exports', 'rule-based categorization', 'programmable ledgers', 'local-first data', 'query DSLs', 'email phishing', 'third-age UX', 'plain-language warnings',
     'accessibility-first design', 'open security tools', 'family-installable inboxes', 'modular runtimes', 'soil reasoning', 'weather agents', 'hydroponic planning', 'livestock optimization', 'compost coordination', 'irrigation management',
     'financial forecasting', 'crop analysis', 'farm telemetry', 'open agricultural standards', 'utility outages', 'WhatsApp-first systems', 'community validation', 'infrastructure intelligence', 'urban disruption', 'live captioning',
