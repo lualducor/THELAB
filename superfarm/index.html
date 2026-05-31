@@ -563,8 +563,8 @@ a { color: inherit; text-decoration: none; }
   var cols = 0, rows = 0, cells = null, words = [], timer = null, t = 0;
 
   function rndGlyph() { return GLYPHS.charAt((Math.random() * GLYPHS.length) | 0); }
-  function glyphAlpha() { return 0.10 + Math.random() * 0.38; }   // faint noise
-  function wordAlpha() { return 0.50 + Math.random() * 0.45; }    // words read brighter
+  function glyphAlpha() { return 0.08 + Math.random() * 0.28; }   // faint noise
+  function wordAlpha() { return 0.72 + Math.random() * 0.28; }    // words read brighter
 
   function paintCell(i) {
     var x = (i % cols) * CELL_W, y = ((i / cols) | 0) * CELL_H;
@@ -599,6 +599,20 @@ a { color: inherit; text-decoration: none; }
     return null;
   }
 
+  // Clear the current words back to glyphs and scatter a fresh random set.
+  function scatter() {
+    for (var i = 0; i < words.length; i++) {
+      var wc = words[i];
+      for (var j = 0; j < wc.length; j++) { setGlyph(wc[j]); paintCell(wc[j]); }
+    }
+    words = [];
+    var target = Math.max(6, Math.round((cols * rows) / 220));   // scattered word density
+    for (var a = 0; a < target * 3 && words.length < target; a++) {
+      var nw = placeWord();
+      if (nw) for (var f = 0; f < nw.length; f++) paintCell(nw[f]);
+    }
+  }
+
   function build() {
     var ww = window.innerWidth, hh = window.innerHeight;
     canvas.width = ww; canvas.height = hh;   // DPR 1: faint background, cheapest
@@ -609,22 +623,21 @@ a { color: inherit; text-decoration: none; }
     ctx.textBaseline = 'top';
     ctx.fillStyle = '#ffffff';   // white tone; the .bg-ascii layer applies its opacity + lighten
     for (var i = 0; i < n; i++) setGlyph(i);
-    var target = Math.max(6, Math.round(n / 220));   // scattered word density
-    for (var a = 0; a < target * 3 && words.length < target; a++) placeWord();
     for (var p = 0; p < n; p++) paintCell(p);
+    scatter();
   }
 
   function tick() {
     if (document.hidden) return;
-    var n = cols * rows, changes = Math.max(1, (n * 0.01) | 0);
+    var n = cols * rows, changes = Math.max(1, (n * 0.012) | 0);
     for (var k = 0; k < changes; k++) {
       var i = (Math.random() * n) | 0;
       if (cells[i].w) { cells[i].a = wordAlpha(); }              // word cell: flicker brightness
       else { cells[i].c = rndGlyph(); cells[i].a = glyphAlpha(); }
       paintCell(i);
     }
-    // Drift: periodically retire one word and scatter a fresh one elsewhere.
-    if ((++t % 12) === 0 && words.length) {
+    // Drift: frequently retire one word and scatter a fresh one elsewhere.
+    if ((++t % 6) === 0 && words.length) {
       var gone = words.splice((Math.random() * words.length) | 0, 1)[0];
       for (var g = 0; g < gone.length; g++) { setGlyph(gone[g]); paintCell(gone[g]); }
       var fresh = placeWord();
@@ -632,15 +645,28 @@ a { color: inherit; text-decoration: none; }
     }
   }
 
-  function start() { if (!timer && !reduceMotion) timer = setInterval(tick, 90); }
+  function start() { if (!timer && !reduceMotion) timer = setInterval(tick, 65); }
   function stop() { if (timer) { clearInterval(timer); timer = null; } }
 
   var rz;
   function onResize() { clearTimeout(rz); rz = setTimeout(function () { stop(); build(); start(); }, 200); }
 
+  // Re-randomize the scattered words on scroll (throttled).
+  var sg = 0;
+  function onScroll() {
+    if (reduceMotion || !cells) return;
+    var now = Date.now();
+    if (now - sg < 120) return;
+    sg = now;
+    scatter();
+  }
+
   build();
   start();
   window.addEventListener('resize', onResize, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true });
+  var scroller = document.getElementById('scroller');
+  if (scroller) scroller.addEventListener('scroll', onScroll, { passive: true });
   document.addEventListener('visibilitychange', function () { if (document.hidden) { stop(); } else { start(); } });
 })();
 </script>
