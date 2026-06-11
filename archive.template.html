@@ -25,6 +25,9 @@ const isEs = it.locale === 'es';
 <meta name="twitter:image" content="https://lucholabs.dev/og-image.jpg">
 
 <link rel="canonical" href="<%= page.canonicalUrl %>">
+<link rel="alternate" hreflang="<%= it.page.locale %>" href="<%= it.page.canonicalUrl %>">
+<link rel="alternate" hreflang="<%= it.page.locale === 'es' ? 'en' : 'es' %>" href="<%= it.page.localeSwapUrl %>">
+<link rel="alternate" hreflang="x-default" href="<%= it.page.locale === 'es' ? it.page.localeSwapUrl : it.page.canonicalUrl %>">
 <link rel="icon" type="image/svg+xml" href="https://lucholabs.dev/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="https://lucholabs.dev/favicon-32.png">
 <link rel="apple-touch-icon" href="https://lucholabs.dev/apple-touch-icon.png">

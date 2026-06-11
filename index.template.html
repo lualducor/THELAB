@@ -10,7 +10,7 @@
 <meta property="og:type" content="website">
 <meta property="og:title" content="lucholabs.dev/lab — Luis Alberto Duarte Cortés">
 <meta property="og:description" content="<%= it.t({ en: 'The /lab: live projects, manifesto, and archive of dead experiments.', es: 'El /lab: proyectos vivos, manifiesto y archivo de experimentos muertos.' }, it.locale) %>">
-<meta property="og:url" content="https://lucholabs.dev/lab">
+<meta property="og:url" content="https://lucholabs.dev<%= it.locale === 'es' ? '/es' : '' %>/lab">
 <meta property="og:image" content="https://lucholabs.dev/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
@@ -19,7 +19,10 @@
 <meta name="twitter:description" content="<%= it.t({ en: 'The /lab: live projects, manifesto, and archive of dead experiments.', es: 'El /lab: proyectos vivos, manifiesto y archivo de experimentos muertos.' }, it.locale) %>">
 <meta name="twitter:image" content="https://lucholabs.dev/og-image.jpg">
 
-<link rel="canonical" href="https://lucholabs.dev/lab">
+<link rel="canonical" href="https://lucholabs.dev<%= it.locale === 'es' ? '/es' : '' %>/lab">
+<link rel="alternate" hreflang="en" href="https://lucholabs.dev/lab">
+<link rel="alternate" hreflang="es" href="https://lucholabs.dev/es/lab">
+<link rel="alternate" hreflang="x-default" href="https://lucholabs.dev/lab">
 <link rel="icon" type="image/svg+xml" href="https://lucholabs.dev/favicon.svg">
 <link rel="icon" type="image/png" sizes="32x32" href="https://lucholabs.dev/favicon-32.png">
 <link rel="apple-touch-icon" href="https://lucholabs.dev/apple-touch-icon.png">

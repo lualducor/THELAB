@@ -155,12 +155,12 @@ function buildProjectJsonLd(project, locale, canonicalUrl) {
       '@id': canonicalUrl,
       url: canonicalUrl,
       name: `${project.name} — THELAB`,
-      description: project.description,
+      description: t(project.description, locale),
       isPartOf: { '@id': getLabUrl(locale) },
       about: {
         '@type': 'SoftwareApplication',
         name: project.name,
-        description: project.description,
+        description: t(project.description, locale),
       },
       inLanguage: locale,
     },
@@ -170,14 +170,19 @@ function buildProjectJsonLd(project, locale, canonicalUrl) {
 }
 
 function buildArchiveJsonLd(locale, canonicalUrl) {
+  const archiveTitle = t(content.lab?.copy?.archiveTitle, locale) || 'Archive — THELAB';
+  const archiveDescription =
+    t(content.lab?.copy?.archiveDescription, locale) ||
+    'Postmortems for archived experiments from lucholabs.';
+
   return JSON.stringify(
     {
       '@context': 'https://schema.org',
       '@type': 'WebPage',
       '@id': canonicalUrl,
       url: canonicalUrl,
-      name: 'Archive — THELAB',
-      description: 'Postmortems for archived experiments from lucholabs.',
+      name: archiveTitle,
+      description: archiveDescription,
       isPartOf: { '@id': getLabUrl(locale) },
       inLanguage: locale,
     },
@@ -193,9 +198,10 @@ function buildProjectPage(project, locale, projectId) {
 
   return {
     title: `${project.name} — lucholabs.dev/lab`,
-    description: project.description,
+    description: t(project.description, locale),
     ogTitle: `${project.name} — lucholabs.dev/lab`,
-    ogDescription: project.labTagline || project.tagline || project.description,
+    ogDescription:
+      t(project.labTagline, locale) || t(project.tagline, locale) || t(project.description, locale),
     canonicalUrl,
     localeSwapUrl,
     locale,
@@ -204,12 +210,15 @@ function buildProjectPage(project, locale, projectId) {
     cvUrl,
     code: projectId.toUpperCase(),
     statusKey: getStatusKey(project.status),
-    statusBadge: project.status,
-    subtitle: project.labTagline || project.tagline || project.description,
-    quote: project.labQuote || '',
+    statusBadge: t(project.status, locale),
+    subtitle:
+      t(project.labTagline, locale) || t(project.tagline, locale) || t(project.description, locale),
+    quote: t(project.labQuote, locale) || '',
     paragraphs: uniqueParagraphs([project.labDescription, project.cvDescription], locale),
-    bullets: Array.isArray(project.labFeatures) ? project.labFeatures : [],
-    note: project.labVision || '',
+    bullets: (Array.isArray(project.labFeatures) ? project.labFeatures : []).map((bullet) =>
+      t(bullet, locale),
+    ),
+    note: t(project.labVision, locale) || '',
     relatedHref: `${cvUrl}#projects`,
     relatedKicker: t(content.lab?.copy?.relatedKicker, locale) || 'CV projects section',
     relatedLabel: t(content.lab?.copy?.relatedLabel, locale) || 'Projects section',
