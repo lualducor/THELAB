@@ -259,6 +259,14 @@ section.has-overflow {
   justify-content: flex-start;
   padding-top: calc(var(--chrome-h-top) + 60px);
 }
+section:not(#hero)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 7vw;
+  right: 7vw;
+  border-top: 1px solid rgba(255, 250, 238, 0.06);
+}
 .section-inner {
   width: 100%;
   max-width: 1280px;
@@ -286,6 +294,11 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   width: 24px;
   height: 1px;
   background: var(--accent);
+}
+.super,
+.project-section .proj-code {
+  font-size: 11px;
+  letter-spacing: 0.16em;
 }
 .s-title {
   font-family: var(--f-display);
@@ -357,8 +370,9 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 @keyframes blink { 50% { background: transparent; } }
 
 /* -------- Hero one-shot typewriter reveal -------- */
+/* w4-lab-audit L2: .tagline stays statically visible so the page states what
+   THE LAB is before the typewriter finishes. */
 .tw-pending #hero .wordmark,
-.tw-pending #hero .tagline,
 .tw-pending #hero .typer-line,
 .tw-pending #hero .sub,
 .tw-pending #hero .scroll-cue {
@@ -507,6 +521,13 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 .pill.progress { color: var(--accent-warm); }
 .pill.prototype { color: var(--fg-mute); }
 .pill.research { color: var(--fg-2); }
+.pill {
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: transparent !important;
+}
+.pill::before { content: "/ "; }
 
 /* -------- Stack -------- */
 #stack .cols {
@@ -930,6 +951,15 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 .source a { color: var(--fg-mute); transition: color var(--t-fast); }
 .source a:hover, .source a:focus-visible { color: var(--accent); outline: none; }
 
+@keyframes status-pulse {
+  50% { opacity: 0.35; }
+}
+.crumb-wrap .dot {
+  width: 6px;
+  height: 6px;
+  animation: status-pulse 1.8s ease-in-out infinite;
+}
+
 /* -------- Responsive -------- */
 @media (max-width: 920px) {
   .blocks { grid-template-columns: 1fr; }
@@ -941,8 +971,11 @@ section.in-view .section-inner { opacity: 1; transform: none; }
   body { font-size: 15px; }
 }
 @media (max-width: 600px) {
+  /* w4-lab-audit L1: on small screens the ASCII field must not compete with the hero */
+  .bg-ascii { opacity: 0.018; }
   .chrome { padding: 0 22px; }
   section { padding: calc(var(--chrome-h-top) + 28px) 5vw calc(var(--chrome-h-bot) + 28px); }
+  section:not(#hero)::before { left: 5vw; right: 5vw; }
   .crumb-wrap { font-size: 15px; }
   .chrome-links { gap: 8px; }
   .cv-link { font-size: 11px; padding: 8px 13px; }
@@ -953,6 +986,7 @@ section.in-view .section-inner { opacity: 1; transform: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
   .bg-ascii, .bg-halftone, .bg-grain { display: block; }
   .section-inner { opacity: 1 !important; transform: none !important; transition: none !important; }
   .typer-line .caret, .final-cursor, .scroll-cue { animation: none !important; }
@@ -1403,13 +1437,13 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
     if (!hero) { root.classList.remove('tw-pending'); return; }
 
     const wordmark = hero.querySelector('.wordmark');
-    const tagline = hero.querySelector('.tagline');
     const typerLine = hero.querySelector('.typer-line');
     const label = typerLine ? typerLine.querySelector('.label') : null;
     const sub = hero.querySelector('.sub');
     const scrollCue = hero.querySelector('.scroll-cue');
 
-    const targets = [wordmark, tagline, label, sub, scrollCue].filter(Boolean);
+    // tagline intentionally excluded: it stays statically visible (w4-lab-audit L2)
+    const targets = [wordmark, label, sub, scrollCue].filter(Boolean);
 
     // Lock heights + clear contents while still visibility:hidden
     targets.forEach(el => {
@@ -1424,7 +1458,6 @@ drwx------  1 lual  staff  <span class="dir">klipper-copilot/</span></div>
 
     const steps = [
       { el: wordmark, delay: 55 },
-      { el: tagline, delay: 22 },
       { el: label, delay: 38 },
       { el: sub, delay: 14 },
       { el: scrollCue, delay: 26 },

@@ -324,6 +324,82 @@ a { color: inherit; text-decoration: none; }
   color: var(--fg-2);
 }
 
+.section-rule {
+  border: none;
+  border-top: 1px solid rgba(255,250,238,0.06);
+  margin: 32px 0;
+}
+
+.lab-quote {
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+
+.lab-quote p {
+  font-family: "Pixelify Sans", "Inter", sans-serif;
+  font-variant-ligatures: none;
+  font-size: clamp(22px, 3.4vw, 30px);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--fg);
+}
+
+.lab-quote cite {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  font-style: normal;
+  color: rgba(255,250,238,0.5);
+}
+
+.lab-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background-color: rgba(255,250,238,0.06);
+}
+
+.lab-feature {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 16px;
+  background: var(--bg);
+}
+
+.lab-feature-index {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.lab-feature-copy {
+  font-family: var(--f-text);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+.lab-vision {
+  border: 1px solid rgba(255,250,238,0.1);
+  padding: 20px;
+  color: var(--fg);
+}
+
+.lab-vision-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lab-vision-marker { color: var(--accent); }
+
 .quote {
   padding-left: 16px;
   border-left: 2px solid rgba(var(--accent-rgb), 0.45);
@@ -422,8 +498,47 @@ a { color: inherit; text-decoration: none; }
 .stamp .stamp-sep { margin: 0 12px; opacity: 0.6; }
 #stamp-current { color: var(--accent); }
 
+@supports (animation-timeline: view()) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: reveal-rise 400ms ease-out forwards;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 30%;
+  }
+}
+
+@keyframes reveal-rise {
+  to { opacity: 1; transform: none; }
+}
+
+html.reveal-fallback [data-reveal]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+}
+
+html.reveal-fallback [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes status-pulse {
+  50% { opacity: 0.35; }
+}
+
+.crumb-wrap .dot {
+  width: 6px;
+  height: 6px;
+  animation: status-pulse 1.8s ease-in-out infinite;
+}
+
 @media (max-width: 920px) {
   .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .lab-features { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 680px) {
@@ -447,6 +562,11 @@ a { color: inherit; text-decoration: none; }
     gap: 10px;
   }
   .es-placeholder { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
 }
 </style>
 <script type="application/ld+json">{
@@ -505,12 +625,15 @@ a { color: inherit; text-decoration: none; }
               </div>
     </section>
 
+    
+    
+    
     <section class="content-grid">
       <article class="story" aria-labelledby="context-title">
         <h2 id="context-title">Context</h2>
-                        <p>Agriculture produces more data than almost any other sector and uses almost none of it well. SUPERFARM is an attempt to close that ratio for farmers who don&#39;t have enterprise budgets. The core insight is shared farm memory — a structured context layer that AI agents read and write, so specialist agents coordinate rather than operate in silos. A soil sensor agent, a pest detection agent, and a weather pattern agent all write to the same context. A planning agent reads all of it and reasons across domains. The orchestration layer handles model routing (swap the underlying LLM without rewiring your agents), telemetry (audit what the system decided and why), and module isolation (a broken agent doesn&#39;t take down the farm). The target user is a medium-scale farmer in LATAM with reasonable connectivity and a limited budget — not an enterprise with a dedicated data science team. The project asks what infrastructure-as-agricultural-intelligence looks like when built from the ground up for that user.</p>
+                <p>Agriculture produces more data than almost any other sector and uses almost none of it well. SUPERFARM is an attempt to close that ratio for farmers who don&#39;t have enterprise budgets. The core insight is shared farm memory — a structured context layer that AI agents read and write, so specialist agents coordinate rather than operate in silos. A soil sensor agent, a pest detection agent, and a weather pattern agent all write to the same context. A planning agent reads all of it and reasons across domains. The orchestration layer handles model routing (swap the underlying LLM without rewiring your agents), telemetry (audit what the system decided and why), and module isolation (a broken agent doesn&#39;t take down the farm). The target user is a medium-scale farmer in LATAM with reasonable connectivity and a limited budget — not an enterprise with a dedicated data science team. The project asks what infrastructure-as-agricultural-intelligence looks like when built from the ground up for that user.</p>
                 <p>SUPERFARM is an open-source runtime and orchestration layer for agricultural AI agents. Modern precision agriculture generates constant sensor data — soil moisture, crop health, weather, equipment telemetry — but most AI tools treat each stream in isolation. SUPERFARM connects them through shared farm memory: a structured context layer that specialist agents read and write, enabling cross-domain reasoning between a soil moisture agent and a crop disease agent. The architecture supports pluggable model routing (swap LLM providers without rewiring agents), persistent telemetry for auditability, and modular specialist agents that extend without touching the core runtime. Designed for small and medium farms in LATAM that can&#39;t afford enterprise precision agriculture platforms but can run open-source tooling on affordable hardware. Built with Python, designed for edge deployment. Current status: research and architecture phase, core orchestration layer under development.</p>
-                              </article>
+              </article>
 
       <aside class="rail">
         <section class="panel" aria-labelledby="related-title">
@@ -539,6 +662,32 @@ a { color: inherit; text-decoration: none; }
     <a href="https://lucholabs.dev/">View CV</a>
   </div>
 </footer>
+
+<script>
+(function () {
+  var reveals = Array.from(document.querySelectorAll('[data-reveal]'));
+  if (!reveals.length) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (element) { element.classList.add('is-visible'); });
+    return;
+  }
+
+  if (window.CSS && CSS.supports && CSS.supports('animation-timeline: view()')) return;
+
+  document.documentElement.classList.add('reveal-fallback');
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(function (element) { observer.observe(element); });
+})();
+</script>
 
 <script>
 /* Animated ASCII background — a faint field of random ASCII glyphs with the

@@ -324,6 +324,82 @@ a { color: inherit; text-decoration: none; }
   color: var(--fg-2);
 }
 
+.section-rule {
+  border: none;
+  border-top: 1px solid rgba(255,250,238,0.06);
+  margin: 32px 0;
+}
+
+.lab-quote {
+  border-left: 2px solid var(--accent);
+  padding-left: 20px;
+}
+
+.lab-quote p {
+  font-family: "Pixelify Sans", "Inter", sans-serif;
+  font-variant-ligatures: none;
+  font-size: clamp(22px, 3.4vw, 30px);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--fg);
+}
+
+.lab-quote cite {
+  display: block;
+  margin-top: 12px;
+  font-family: var(--f-mono);
+  font-size: 13px;
+  font-style: normal;
+  color: rgba(255,250,238,0.5);
+}
+
+.lab-features {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1px;
+  background-color: rgba(255,250,238,0.06);
+}
+
+.lab-feature {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 16px;
+  background: var(--bg);
+}
+
+.lab-feature-index {
+  font-family: var(--f-mono);
+  font-size: 13px;
+  color: var(--accent);
+}
+
+.lab-feature-copy {
+  font-family: var(--f-text);
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fg);
+}
+
+.lab-vision {
+  border: 1px solid rgba(255,250,238,0.1);
+  padding: 20px;
+  color: var(--fg);
+}
+
+.lab-vision-label {
+  display: block;
+  margin-bottom: 8px;
+  font-family: var(--f-mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.lab-vision-marker { color: var(--accent); }
+
 .quote {
   padding-left: 16px;
   border-left: 2px solid rgba(var(--accent-rgb), 0.45);
@@ -422,8 +498,47 @@ a { color: inherit; text-decoration: none; }
 .stamp .stamp-sep { margin: 0 12px; opacity: 0.6; }
 #stamp-current { color: var(--accent); }
 
+@supports (animation-timeline: view()) {
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(12px);
+    animation: reveal-rise 400ms ease-out forwards;
+    animation-timeline: view(block);
+    animation-range: entry 0% entry 30%;
+  }
+}
+
+@keyframes reveal-rise {
+  to { opacity: 1; transform: none; }
+}
+
+html.reveal-fallback [data-reveal]:not(.is-visible) {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 400ms ease-out, transform 400ms ease-out;
+}
+
+html.reveal-fallback [data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes status-pulse {
+  50% { opacity: 0.35; }
+}
+
+.crumb-wrap .dot {
+  width: 6px;
+  height: 6px;
+  animation: status-pulse 1.8s ease-in-out infinite;
+}
+
 @media (max-width: 920px) {
   .content-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 600px) {
+  .lab-features { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 680px) {
@@ -447,6 +562,11 @@ a { color: inherit; text-decoration: none; }
     gap: 10px;
   }
   .es-placeholder { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+  [data-reveal] { opacity: 1 !important; transform: none !important; }
 }
 </style>
 <script type="application/ld+json">{
@@ -504,12 +624,15 @@ a { color: inherit; text-decoration: none; }
               </div>
     </section>
 
+    
+    
+    
     <section class="content-grid">
       <article class="story" aria-labelledby="context-title">
         <h2 id="context-title">Context</h2>
-                        <p>Boveda started as a personal frustration: I wanted to track my finances but every tool required trusting a third party with my bank credentials or uploading statements to a cloud dashboard. The solution was to keep the data where it belongs — on the device. The core is a set of bank-specific statement parsers (Bancolombia, Nequi, Daviplata) that handle the quirks of each bank&#39;s export format: implicit credit/debit signs, inconsistent column names, encoding edge cases. Parsed transactions land in a local SQLite database served through a FastAPI REST API. The architecture is intentionally boring: Python 3.12, SQLAlchemy, Alembic, pytest. No AI, no cloud, no magic. The project is also a forcing function for understanding a real structural gap in Colombian fintech: banks don&#39;t expose APIs, which means users either share credentials or stay unaware of their spending. Local-first isn&#39;t a preference here — it&#39;s the only architecture that doesn&#39;t compromise user privacy.</p>
+                <p>Boveda started as a personal frustration: I wanted to track my finances but every tool required trusting a third party with my bank credentials or uploading statements to a cloud dashboard. The solution was to keep the data where it belongs — on the device. The core is a set of bank-specific statement parsers (Bancolombia, Nequi, Daviplata) that handle the quirks of each bank&#39;s export format: implicit credit/debit signs, inconsistent column names, encoding edge cases. Parsed transactions land in a local SQLite database served through a FastAPI REST API. The architecture is intentionally boring: Python 3.12, SQLAlchemy, Alembic, pytest. No AI, no cloud, no magic. The project is also a forcing function for understanding a real structural gap in Colombian fintech: banks don&#39;t expose APIs, which means users either share credentials or stay unaware of their spending. Local-first isn&#39;t a preference here — it&#39;s the only architecture that doesn&#39;t compromise user privacy.</p>
                 <p>Boveda is a local-first personal finance dashboard built for Colombian bank accounts. Colombian banks don&#39;t expose transaction APIs, so every existing budgeting tool requires cloud access or credential sharing. Boveda takes a different approach: it parses statement exports (PDF, XLSX, CSV) from Bancolombia, Nequi, and Daviplata, extracts structured transaction data using rule-based parsers per bank, and stores everything locally in SQLite with zero cloud sync. The backend runs on Python 3.12, FastAPI, and SQLAlchemy with Alembic migrations. Each bank has its own parser module handling format inconsistencies, implicit sign inference, and category tagging without machine learning. The API serves structured financial data to a React frontend in progress. Full pytest coverage across parser and API layers. Local-first by design: no credential exposure, no third-party data access, no subscription required to understand your own finances.</p>
-                              </article>
+              </article>
 
       <aside class="rail">
         <section class="panel" aria-labelledby="related-title">
@@ -538,6 +661,32 @@ a { color: inherit; text-decoration: none; }
     <a href="https://lucholabs.dev/">View CV</a>
   </div>
 </footer>
+
+<script>
+(function () {
+  var reveals = Array.from(document.querySelectorAll('[data-reveal]'));
+  if (!reveals.length) return;
+
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if (reduceMotion || !('IntersectionObserver' in window)) {
+    reveals.forEach(function (element) { element.classList.add('is-visible'); });
+    return;
+  }
+
+  if (window.CSS && CSS.supports && CSS.supports('animation-timeline: view()')) return;
+
+  document.documentElement.classList.add('reveal-fallback');
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (entry) {
+      if (!entry.isIntersecting) return;
+      entry.target.classList.add('is-visible');
+      observer.unobserve(entry.target);
+    });
+  }, { threshold: 0.1 });
+
+  reveals.forEach(function (element) { observer.observe(element); });
+})();
+</script>
 
 <script>
 /* Animated ASCII background — a faint field of random ASCII glyphs with the

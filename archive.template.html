@@ -412,6 +412,16 @@ a { color: inherit; text-decoration: none; }
 .stamp .stamp-sep { margin: 0 12px; opacity: 0.6; }
 #stamp-current { color: var(--accent); }
 
+@keyframes status-pulse {
+  50% { opacity: 0.35; }
+}
+
+.crumb-wrap .dot {
+  width: 6px;
+  height: 6px;
+  animation: status-pulse 1.8s ease-in-out infinite;
+}
+
 @media (max-width: 920px) {
   .content-grid { grid-template-columns: 1fr; }
 }
@@ -437,6 +447,10 @@ a { color: inherit; text-decoration: none; }
     gap: 10px;
   }
   .es-placeholder { font-size: 11px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
 }
 </style>
 <script type="application/ld+json"><%~ page.jsonLd %></script>
